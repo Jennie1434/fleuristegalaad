@@ -1,0 +1,182 @@
+/* Generateur Layout */
+.builder-layout {
+    display: grid;
+    grid-template-columns: 280px auto 280px;
+    gap: 20px;
+    height: calc(100vh - 180px);
+    min-height: 600px;
+}
+
+.builder-panel {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.preview-panel {
+    background: linear-gradient(135deg, #1a0f15 0%, #2d1f28 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.bouquet-name {
+    color: rgba(255, 255, 255, 0.85);
+    font-family: var(--font-serif, serif);
+    font-size: 1.8rem;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 24px;
+    z-index: 10;
+}
+
+#bouquet-canvas {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    z-index: 10;
+}
+
+.bouquet-flower {
+    position: absolute;
+    font-size: 3.5rem;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+    transition: all 0.4s ease-out;
+    transform-origin: center center;
+    user-select: none;
+}
+
+/* Flower Pick Card */
+.flower-pick-card {
+    border: 1.5px solid var(--border, #eaeaea);
+    border-radius: 12px;
+    padding: 12px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.flower-pick-card:hover {
+    border-color: var(--primary-light, #c4a79d);
+}
+
+.flower-pick-card.selected {
+    border-color: var(--primary, #8e756b);
+    background: rgba(142, 117, 107, 0.08); /* primary rgba fallback */
+}
+
+.selected-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary, #8e756b);
+    color: white;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s;
+}
+
+.flower-pick-card.selected .selected-badge {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Color Swatch */
+.color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.color-swatch.selected {
+    border-color: var(--primary, #8e756b);
+    transform: scale(1.15);
+    box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary, #8e756b);
+}
+
+/* Forme Card */
+.forme-card {
+    border: 1px solid var(--border, #eaeaea);
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.forme-card.selected {
+    border-color: var(--primary, #8e756b);
+    background: rgba(142, 117, 107, 0.05);
+}
+
+/* Style chip */
+.style-chip {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    background: var(--neutral-100, #f5f5f5);
+    border: 1px solid var(--border, #eaeaea);
+    cursor: pointer;
+}
+
+.style-chip.selected {
+    background: var(--primary, #8e756b);
+    color: white;
+    border-color: var(--primary, #8e756b);
+}
+
+/* Background petals in canvas */
+.preview-panel::before {
+    content: "🌸 🌼 🌺 🌿";
+    position: absolute;
+    font-size: 5rem;
+    opacity: 0.03;
+    letter-spacing: 50px;
+    filter: blur(2px);
+    transform: rotate(-15deg);
+    top: 20%;
+    left: -10%;
+    pointer-events: none;
+}
+.preview-panel::after {
+    content: "🌷 🌻 🌹 🌸";
+    position: absolute;
+    font-size: 4rem;
+    opacity: 0.02;
+    letter-spacing: 40px;
+    filter: blur(1px);
+    transform: rotate(20deg);
+    bottom: 20%;
+    right: -10%;
+    pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .builder-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    #bouquet-canvas {
+        margin: 2rem auto;
+    }
+}

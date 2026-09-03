@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devis Mariage — Atelier Galaad</title>
+    <meta name="description" content="Demandez votre devis pour un mariage fleuri avec Atelier Galaad.">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/devis.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+    <nav class="nav" id="main-nav" data-transparent="false">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.jpg" alt="Atelier Galaad Logo" onerror="this.src=''; this.alt='Atelier Galaad';">
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Accueil</a>
+                <a href="catalogue.html">Catalogue</a>
+                <a href="devis-mariage.html" class="active">Mariages</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="header-content">
+            <h1>Votre Mariage de Rêve</h1>
+            <p>Construisons ensemble la scénographie florale de votre grand jour</p>
+        </div>
+    </header>
+
+    <main class="devis-page">
+        <div class="devis-container">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="step-indicators" id="step-indicators">
+                    <div class="step-indicator active">1</div>
+                    <div class="step-indicator">2</div>
+                    <div class="step-indicator">3</div>
+                    <div class="step-indicator">4</div>
+                    <div class="step-indicator">5</div>
+                </div>
+                <div class="step-labels">
+                    <span>Date & Lieu</span>
+                    <span>Style & Couleurs</span>
+                    <span>Compositions</span>
+                    <span>Options</span>
+                    <span>Récapitulatif</span>
+                </div>
+            </div>
+
+            <form id="devis-form" onsubmit="event.preventDefault(); handleSubmit();">
+                <!-- Step 1: Date & Lieu -->
+                <div class="step-panel active" id="step-1">
+                    <h2>Date et Lieu</h2>
+                    <div class="form-group">
+                        <label for="date-mariage">Date du mariage *</label>
+                        <input type="date" id="date-mariage" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ville-mariage">Ville / Code Postal *</label>
+                        <input type="text" id="ville-mariage" name="ville" placeholder="Ex: Paris 75001" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="invites-mariage">Nombre d'invités : <span id="invites-val">100</span></label>
+                        <input type="range" id="invites-mariage" name="invites" min="10" max="500" value="100" oninput="document.getElementById('invites-val').innerText = this.value">
+                    </div>
+                    <div class="form-group">
+                        <label for="lieu-mariage">Type de lieu *</label>
+                        <select id="lieu-mariage" name="lieu" required>
+                            <option value="">Sélectionnez un lieu</option>
+                            <option value="eglise">Église</option>
+                            <option value="mairie">Mairie</option>
+                            <option value="domaine">Domaine</option>
+                            <option value="plage">Plage</option>
+                            <option value="jardin">Jardin</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 2: Style & Couleurs -->
+                <div class="step-panel" id="step-2">
+                    <h2>Style & Couleurs</h2>
+                    <div class="form-group">
+                        <label>Style de l'événement</label>
+                        <div class="options-grid" id="style-options">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Palette de couleurs (jusqu'à 3)</label>
+                        <div class="color-grid" id="color-options">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Compositions -->
+                <div class="step-panel" id="step-3">
+                    <h2>Compositions Florales</h2>
+                    
+                    <div class="composition-section">
+                        <h3>Bouquet de la mariée</h3>
+                        <div class="options-grid">
+                            <label class="option-card radio-card">
+                                <input type="radio" name="bouquet" value="simple" data-price="120">
+                                <div class="card-content">
+                                    <h4>Simple & Élégant</h4>
+                                    <p>120 €</p>
+                                </div>
+                            </label>
+                            <label class="option-card radio-card">
+                                <input type="radio" name="bouquet" value="luxe" data-price="250">
+                                <div class="card-content">
+                                    <h4>Luxe & Volume</h4>
+                                    <p>250 €</p>
+                                </div>
+                            </label>
+                            <label class="option-card radio-card">
+                                <input type="radio" name="bouquet" value="prestige" data-price="450">
+                                <div class="card-content">
+                                    <h4>Prestige Sur-Mesure</h4>
+                                    <p>450 €</p>
+                                </div>
+                            </label>
+                            <label class="option-card radio-card">
+                                <input type="radio" name="bouquet" value="none" data-price="0" checked>
+                                <div class="card-content">
+                                    <h4>Aucun</h4>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="composition-section qty-section">
+                        <div class="qty-label">
+                            <h3>Bouquets Demoiselles d'Honneur (45€/u)</h3>
+                        </div>
+                        <div class="qty-control">
+                            <button type="button" onclick="updateQty('demoiselles', -1)">-</button>
+                            <span id="qty-demoiselles">0</span>
+                            <button type="button" onclick="updateQty('demoiselles', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="composition-section qty-section">
+                        <div class="qty-label">
+                            <h3>Boutonnières (15€/u)</h3>
+                        </div>
+                        <div class="qty-control">
+                            <button type="button" onclick="updateQty('boutonnieres', -1)">-</button>
+                            <span id="qty-boutonnieres">0</span>
+                            <button type="button" onclick="updateQty('boutonnieres', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="composition-section qty-section">
+                        <div class="qty-label">
+                            <h3>Centres de table (80€/u)</h3>
+                        </div>
+                        <div class="qty-control">
+                            <button type="button" onclick="updateQty('centres', -1)">-</button>
+                            <span id="qty-centres">0</span>
+                            <button type="button" onclick="updateQty('centres', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="composition-section">
+                        <label class="toggle-row">
+                            <h3>Arche Florale (à partir de 600€)</h3>
+                            <div class="toggle">
+                                <input type="checkbox" id="arche-toggle" onchange="document.getElementById('arche-options').style.display = this.checked ? 'block' : 'none'">
+                                <span class="slider"></span>
+                            </div>
+                        </label>
+                        <div id="arche-options" style="display: none; margin-top: 15px;">
+                            <div class="options-grid">
+                                <label class="option-card radio-card">
+                                    <input type="radio" name="arche_style" value="partielle" data-price="600" checked>
+                                    <div class="card-content">
+                                        <h4>Fleurissement partiel</h4>
+                                        <p>600 €</p>
+                                    </div>
+                                </label>
+                                <label class="option-card radio-card">
+                                    <input type="radio" name="arche_style" value="totale" data-price="1200">
+                                    <div class="card-content">
+                                        <h4>Fleurissement total</h4>
+                                        <p>1200 €</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Step 4: Options -->
+                <div class="step-panel" id="step-4">
+                    <h2>Options Supplémentaires</h2>
+                    <div class="options-list">
+                        <label class="toggle-row">
+                            <div>
+                                <h3>Chemin de table en feuillage</h3>
+                                <p>30€ / mètre (calculé selon tables)</p>
+                            </div>
+                            <div class="toggle">
+                                <input type="checkbox" name="extra_chemin" id="extra_chemin" data-price="150">
+                                <span class="slider"></span>
+                            </div>
+                        </label>
+                        <label class="toggle-row">
+                            <div>
+                                <h3>Pétales pour sortie de cérémonie</h3>
+                                <p>50€ le panier</p>
+                            </div>
+                            <div class="toggle">
+                                <input type="checkbox" name="extra_petales" data-price="50">
+                                <span class="slider"></span>
+                            </div>
+                        </label>
+                        <label class="toggle-row">
+                            <div>
+                                <h3>Couronne de fleurs mariée</h3>
+                                <p>85€</p>
+                            </div>
+                            <div class="toggle">
+                                <input type="checkbox" name="extra_couronne" data-price="85">
+                                <span class="slider"></span>
+                            </div>
+                        </label>
+                        <label class="toggle-row">
+                            <div>
+                                <h3>Livraison sur site</h3>
+                                <p>Forfait 100€ (selon distance)</p>
+                            </div>
+                            <div class="toggle">
+                                <input type="checkbox" name="extra_livraison" data-price="100" checked>
+                                <span class="slider"></span>
+                            </div>
+                        </label>
+                        <label class="toggle-row">
+                            <div>
+                                <h3>Installation et démontage</h3>
+                                <p>Forfait 250€</p>
+                            </div>
+                            <div class="toggle">
+                                <input type="checkbox" name="extra_installation" data-price="250">
+                                <span class="slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 5: Récapitulatif -->
+                <div class="step-panel" id="step-5">
+                    <h2>Récapitulatif de votre demande</h2>
+                    
+                    <div class="recap-content" id="recap-content">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <div class="contact-form-section">
+                        <h3>Vos coordonnées</h3>
+                        <div class="form-group">
+                            <label for="contact-nom">Nom et Prénom *</label>
+                            <input type="text" id="contact-nom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Email *</label>
+                            <input type="email" id="contact-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-phone">Téléphone *</label>
+                            <input type="tel" id="contact-phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-message">Message supplémentaire</label>
+                            <textarea id="contact-message" name="message" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="btn-prev" onclick="prevStep()" style="display: none;">Retour</button>
+                    <button type="button" class="btn btn-primary" id="btn-next" onclick="nextStep()">Suivant</button>
+                    <button type="submit" class="btn btn-primary" id="btn-submit" style="display: none;">Envoyer la demande</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <script src="data/catalogue.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/devis.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

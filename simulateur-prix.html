@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulateur de Prix — Atelier Galaad</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/simulateur.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="nav nav-scrolled" id="main-nav" data-transparent="false">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <img src="assets/images/logo.jpg" alt="Atelier Galaad Logo" class="nav-logo-img">
+                <span class="nav-logo-text">Atelier Galaad</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Accueil</a>
+                <a href="catalogue.html">Catalogue</a>
+                <a href="simulateur-prix.html" class="active">Simulateur</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Simulateur de Prix</h1>
+            <p>Personnalisez votre arrangement floral et obtenez une estimation immédiate.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="sim-layout">
+            <!-- Left Column: Configuration -->
+            <div class="sim-config">
+                
+                <section class="sim-section">
+                    <h2 class="sim-section-title">Type d'arrangement</h2>
+                    <div class="arrangement-cards" id="arrangement-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <section class="sim-section">
+                    <h2 class="sim-section-title">Vos fleurs</h2>
+                    <div class="fleur-grid" id="fleur-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <section class="sim-section">
+                    <h2 class="sim-section-title">Taille</h2>
+                    <div class="taille-cards">
+                        <label class="taille-card">
+                            <input type="radio" name="taille" value="petit" onchange="selectTaille('petit')">
+                            <div class="taille-content">
+                                <span class="taille-name">Petit</span>
+                                <span class="taille-desc">Taille réduite (×0.7)</span>
+                            </div>
+                        </label>
+                        <label class="taille-card">
+                            <input type="radio" name="taille" value="moyen" checked onchange="selectTaille('moyen')">
+                            <div class="taille-content">
+                                <span class="taille-name">Moyen</span>
+                                <span class="taille-desc">Standard (×1.0)</span>
+                            </div>
+                        </label>
+                        <label class="taille-card">
+                            <input type="radio" name="taille" value="grand" onchange="selectTaille('grand')">
+                            <div class="taille-content">
+                                <span class="taille-name">Grand</span>
+                                <span class="taille-desc">Volume maximum (×1.4)</span>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+
+                <section class="sim-section">
+                    <h2 class="sim-section-title">Extras</h2>
+                    <div class="extras-list">
+                        <label class="extra-item">
+                            <input type="checkbox" onchange="toggleExtra('emballage')">
+                            <span class="extra-name">Emballage premium</span>
+                            <span class="extra-price">+8€</span>
+                        </label>
+                        <label class="extra-item">
+                            <input type="checkbox" onchange="toggleExtra('ruban')">
+                            <span class="extra-name">Ruban satin</span>
+                            <span class="extra-price">+5€</span>
+                        </label>
+                        <label class="extra-item">
+                            <input type="checkbox" onchange="toggleExtra('carte')">
+                            <span class="extra-name">Carte message</span>
+                            <span class="extra-price">+3€</span>
+                        </label>
+                        <label class="extra-item">
+                            <input type="checkbox" onchange="toggleExtra('livraison')">
+                            <span class="extra-name">Livraison Paris</span>
+                            <span class="extra-price">+12€</span>
+                        </label>
+                        <label class="extra-item">
+                            <input type="checkbox" onchange="toggleExtra('installation')">
+                            <span class="extra-name">Installation sur place</span>
+                            <span class="extra-price">+25€</span>
+                        </label>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Right Column: Sticky Price Panel -->
+            <div class="sim-summary">
+                <div class="price-panel">
+                    <div class="price-panel-header">
+                        <h3>Votre estimation 🌸</h3>
+                    </div>
+                    <div class="price-panel-body">
+                        <ul class="price-breakdown" id="price-breakdown">
+                            <!-- Populated by JS -->
+                        </ul>
+                        <hr class="price-divider">
+                        <div class="price-total-wrap">
+                            <span>Total estimé</span>
+                            <div class="price-panel-total" id="price-total">0€</div>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="openModal()">Demander ce bouquet</button>
+                        <button class="btn btn-outline btn-full mt-2" onclick="resetAll()">Réinitialiser</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="request-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Envoyer la demande</h2>
+                <button class="icon-btn" onclick="closeModal()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Votre configuration a été sauvegardée. Remplissez ce formulaire pour que nous puissions finaliser votre commande.</p>
+                <form onsubmit="event.preventDefault(); alert('Demande envoyée !'); closeModal(); resetAll();">
+                    <div class="form-group">
+                        <label>Nom complet</label>
+                        <input type="text" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Téléphone</label>
+                        <input type="tel" class="form-input">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full mt-4">Envoyer la demande</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/nav.js"></script>
+    <script src="data/catalogue.js"></script>
+    <script src="js/simulateur.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

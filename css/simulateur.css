@@ -1,0 +1,378 @@
+/* simulateur.css */
+
+.sim-layout {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    gap: 32px;
+    margin: 40px 0;
+}
+
+@media (max-width: 900px) {
+    .sim-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sim-section {
+    background-color: var(--white, #fff);
+    padding: 24px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.sim-section-title {
+    font-family: var(--font-serif, serif);
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--border, #eee);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    color: var(--text-main, #333);
+}
+
+/* Arrangements */
+.arrangement-cards {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 12px;
+    scrollbar-width: thin;
+}
+
+.arrangement-card {
+    flex-shrink: 0;
+    width: 140px;
+    border: 1.5px solid var(--border, #eee);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.arrangement-card:hover {
+    border-color: var(--primary, #d4a373);
+}
+
+.arrangement-card.selected {
+    border-color: var(--primary, #d4a373);
+    background-color: rgba(212, 163, 115, 0.06); /* primary with opacity */
+}
+
+.arrangement-emoji {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.arrangement-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.arrangement-price {
+    font-size: 0.8rem;
+    color: var(--text-muted, #666);
+}
+
+/* Fleurs */
+.fleur-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+@media (max-width: 600px) {
+    .fleur-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.fleur-btn {
+    border: 1.5px solid var(--border, #eee);
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.fleur-btn:hover {
+    border-color: var(--primary, #d4a373);
+}
+
+.fleur-btn.selected {
+    border-color: var(--primary, #d4a373);
+    background-color: var(--bg-tint, #fdfbf7);
+}
+
+.fleur-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.fleur-price {
+    font-size: 0.75rem;
+    color: var(--text-muted, #666);
+}
+
+.qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.qty-btn {
+    background: var(--bg-alt, #f5f5f5);
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.qty-btn:hover {
+    background: #e0e0e0;
+}
+
+/* Taille */
+.taille-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.taille-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border: 1.5px solid var(--border, #eee);
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.taille-card:hover {
+    background: var(--bg-tint, #fdfbf7);
+}
+
+.taille-card input:checked + .taille-content {
+    font-weight: bold;
+}
+
+.taille-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.taille-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted, #666);
+    font-weight: normal;
+}
+
+/* Extras */
+.extras-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.extra-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.extra-name {
+    flex-grow: 1;
+}
+
+.extra-price {
+    color: var(--text-muted, #666);
+    font-size: 0.9rem;
+}
+
+/* Sticky Price Panel */
+.sim-summary {
+    position: relative;
+}
+
+.price-panel {
+    position: sticky;
+    top: 100px;
+    background: var(--white, #fff);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.price-panel-header {
+    background: linear-gradient(135deg, var(--primary, #d4a373) 0%, #b88655 100%);
+    padding: 24px;
+    color: white;
+    text-align: center;
+}
+
+.price-panel-header h3 {
+    margin: 0;
+    font-family: var(--font-serif, serif);
+    font-size: 1.5rem;
+}
+
+.price-panel-body {
+    padding: 24px;
+}
+
+.price-breakdown {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.price-breakdown li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.price-breakdown li .item-name {
+    color: var(--text-main, #333);
+}
+
+.price-breakdown li .item-price {
+    font-weight: 500;
+}
+
+.price-divider {
+    border: none;
+    border-top: 1px dashed var(--border, #eee);
+    margin: 20px 0;
+}
+
+.price-total-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.price-total-wrap span {
+    font-size: 0.9rem;
+    color: var(--text-muted, #666);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.price-panel-total {
+    font-family: var(--font-serif, serif);
+    font-size: 2.5rem;
+    color: var(--primary, #d4a373);
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.mt-2 { margin-top: 8px; }
+.mt-4 { margin-top: 16px; }
+.btn-full { width: 100%; display: block; text-align: center; }
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-card {
+    background: var(--white, #fff);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    padding: 32px;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-overlay.active .modal-card {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-family: var(--font-serif, serif);
+    margin: 0;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted, #666);
+}
+
+.icon-btn:hover {
+    color: var(--text-main, #333);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-main, #333);
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border, #eee);
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary, #d4a373);
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créateur de Bouquet — Atelier Galaad</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/generateur.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav class='nav nav-scrolled' id='main-nav' data-transparent='false'>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/images/logo.jpg" alt="Atelier Galaad">
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Accueil</a>
+                <a href="catalogue.html">Catalogue</a>
+                <a href="generateur-bouquet.html" class="active">Créateur</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-container" style="padding-top: 100px; padding-bottom: 40px;">
+        <h1 class="page-title text-center font-serif" style="margin-bottom: 2rem; font-size: 2.5rem;">Créateur de Bouquet</h1>
+        
+        <div class="builder-layout max-w-7xl mx-auto px-4">
+            <!-- LEFT PANEL -->
+            <aside class="builder-panel left-panel">
+                <h3 class="font-serif mb-4 text-xl">Personnalisation</h3>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Style</label>
+                    <div id="style-container" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Palette de couleurs</label>
+                    <div id="couleur-container" class="flex flex-wrap gap-3"></div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Forme du bouquet</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="forme-card" data-forme="rond">
+                            <div class="text-2xl mb-1">🔵</div>
+                            <div class="text-xs">Rond</div>
+                        </div>
+                        <div class="forme-card" data-forme="cascade">
+                            <div class="text-2xl mb-1">🌊</div>
+                            <div class="text-xs">Cascade</div>
+                        </div>
+                        <div class="forme-card" data-forme="brassee">
+                            <div class="text-2xl mb-1">🌿</div>
+                            <div class="text-xs">Brassée</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Taille</label>
+                    <input type="range" id="taille-slider" min="1" max="3" value="2" class="w-full">
+                    <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                        <span>Petit</span>
+                        <span>Moyen</span>
+                        <span>Grand</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CENTER PANEL -->
+            <section class="preview-panel">
+                <h2 id="bouquet-name" class="bouquet-name">Bouquet Personnalisé</h2>
+                
+                <div id="bouquet-canvas">
+                    <!-- Flowers will be rendered here -->
+                    <div id="empty-state" class="absolute inset-0 flex items-center justify-center text-white/50 text-center px-6">
+                        Sélectionnez des fleurs pour composer votre bouquet
+                    </div>
+                </div>
+
+                <button id="btn-shuffle" class="btn btn-outline border-white/30 text-white hover:bg-white/10 mt-8 absolute bottom-6">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i> Remélanger
+                </button>
+            </section>
+
+            <!-- RIGHT PANEL -->
+            <aside class="builder-panel right-panel flex flex-col">
+                <h3 class="font-serif mb-4 text-xl">Choisissez vos fleurs</h3>
+                
+                <div id="fleurs-grid" class="grid grid-cols-2 gap-3 mb-6 overflow-y-auto flex-1 pr-2" style="max-height: 400px;">
+                    <!-- Flower toggles rendered here -->
+                </div>
+
+                <div class="mt-auto pt-4 border-t border-neutral-200">
+                    <div class="mb-4">
+                        <h4 class="text-sm font-medium mb-1">Composition :</h4>
+                        <p id="composition-summary" class="text-xs text-neutral-500 italic">Aucune fleur sélectionnée</p>
+                    </div>
+                    <div class="flex justify-between items-end mb-4">
+                        <span class="text-sm font-medium">Prix estimé :</span>
+                        <span id="price-total" class="text-xl font-serif">0 €</span>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <button id="btn-commander" class="btn btn-primary w-full" onclick="window.location.href='simulateur-prix.html'">Commander</button>
+                        <button id="btn-copy" class="btn btn-outline w-full">
+                            <i data-lucide="copy" class="w-4 h-4 mr-2"></i> Copier la composition
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="data/catalogue.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/generateur.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

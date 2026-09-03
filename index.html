@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atelier Galaad — Art Floral à Paris</title>
+  <meta name="description" content="Atelier Galaad, votre fleuriste d'art à Paris. Bouquets sur-mesure, décoration de mariage, compositions florales uniques. Devis mariage, simulateur de prix et générateur de bouquet en ligne." />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="page-enter">
+
+  <!-- ═══════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════ -->
+  <nav class="nav nav-transparent" id="main-nav" data-transparent="true">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/logo.jpg" alt="Atelier Galaad logo" />
+        <span class="nav-logo-text">Atelier Galaad</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="catalogue-chat.html" class="nav-link">Catalogue</a>
+        <a href="simulateur-prix.html" class="nav-link">Simulateur</a>
+        <a href="generateur-bouquet.html" class="nav-link">Créateur</a>
+        <a href="devis-mariage.html" class="nav-link nav-cta btn btn-ghost btn-sm">Devis Mariage</a>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="index.html" class="nav-link">Accueil</a>
+    <a href="catalogue-chat.html" class="nav-link">Catalogue</a>
+    <a href="simulateur-prix.html" class="nav-link">Simulateur de prix</a>
+    <a href="generateur-bouquet.html" class="nav-link">Créateur de bouquet</a>
+    <a href="devis-mariage.html" class="nav-link">Devis Mariage</a>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       HERO
+  ═══════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <img src="assets/images/hero.jpg" alt="Atelier Galaad — Fleuriste à Paris" class="hero-img" />
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content container">
+      <div class="hero-label hero-animate-1">
+        <span>✦</span> Art Floral · Paris <span>✦</span>
+      </div>
+      <h1 class="hero-title hero-animate-2">
+        L'art des fleurs,<br /><em>sublimé pour vous</em>
+      </h1>
+      <p class="hero-subtitle hero-animate-3">
+        Compositions florales sur-mesure, mariage, événements.<br />
+        Chaque bouquet raconte une histoire unique.
+      </p>
+      <div class="hero-actions hero-animate-4">
+        <a href="devis-mariage.html" class="btn btn-primary btn-lg">
+          <i data-lucide="heart"></i>
+          Devis Mariage
+        </a>
+        <a href="catalogue-chat.html" class="btn btn-ghost btn-lg">
+          <i data-lucide="message-circle"></i>
+          Découvrir le catalogue
+        </a>
+      </div>
+    </div>
+    <a href="#features" class="hero-scroll" aria-label="Défiler">
+      <i data-lucide="chevron-down"></i>
+    </a>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       FEATURES TOOLS
+  ═══════════════════════════════════ -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="text-center reveal">
+        <span class="section-label">Nos outils</span>
+        <h2 class="section-title">Créez votre expérience florale</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">
+          Explorez notre catalogue, construisez votre bouquet idéal, estimez votre budget et obtenez un devis mariage personnalisé.
+        </p>
+      </div>
+      <div class="features-grid">
+        <a href="devis-mariage.html" class="feature-card reveal delay-1">
+          <div class="feature-icon">💍</div>
+          <h3>Devis Mariage</h3>
+          <p>Configurez votre décoration florale de mariage en quelques étapes et recevez une estimation instantanée.</p>
+          <span class="feature-arrow">
+            <i data-lucide="arrow-right"></i>
+          </span>
+        </a>
+        <a href="catalogue-chat.html" class="feature-card reveal delay-2">
+          <div class="feature-icon">💬</div>
+          <h3>Chat Catalogue</h3>
+          <p>Notre conseillère florale virtuelle vous guide à travers notre catalogue et vous propose des créations sur-mesure.</p>
+          <span class="feature-arrow">
+            <i data-lucide="arrow-right"></i>
+          </span>
+        </a>
+        <a href="simulateur-prix.html" class="feature-card reveal delay-3">
+          <div class="feature-icon">🧮</div>
+          <h3>Simulateur de Prix</h3>
+          <p>Composez votre arrangement floral et obtenez une estimation de prix en temps réel selon vos choix.</p>
+          <span class="feature-arrow">
+            <i data-lucide="arrow-right"></i>
+          </span>
+        </a>
+        <a href="generateur-bouquet.html" class="feature-card reveal delay-4">
+          <div class="feature-icon">🌷</div>
+          <h3>Créateur de Bouquet</h3>
+          <p>Composez visuellement votre bouquet idéal en choisissant vos fleurs, couleurs et style préférés.</p>
+          <span class="feature-arrow">
+            <i data-lucide="arrow-right"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       ABOUT
+  ═══════════════════════════════════ -->
+  <section class="section about-section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-images reveal-left">
+          <div class="about-img-main">
+            <img src="assets/images/hero.jpg" alt="Notre atelier" />
+          </div>
+          <div class="about-badge">
+            <span class="about-badge-number">12+</span>
+            <span class="about-badge-text">ans d'expérience</span>
+          </div>
+        </div>
+        <div class="about-content reveal-right">
+          <span class="section-label">Notre histoire</span>
+          <h2 class="section-title">Un atelier floral né de la passion</h2>
+          <div class="divider"></div>
+          <p>Fondé au cœur de Paris, l'Atelier Galaad est le fruit d'une passion profonde pour l'art floral. Chaque composition est pensée comme une œuvre, où les fleurs de saison se rencontrent dans une harmonie parfaite.</p>
+          <p style="margin-top:16px;">Nous travaillons en étroite collaboration avec des producteurs locaux et engagés, pour vous offrir des fleurs fraîches, durables et extraordinaires.</p>
+          <div class="about-stats">
+            <div class="about-stat">
+              <span class="about-stat-num">2 500+</span>
+              <span class="about-stat-label">Bouquets créés</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat-num">350+</span>
+              <span class="about-stat-label">Mariages décorés</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat-num">98%</span>
+              <span class="about-stat-label">Clients satisfaits</span>
+            </div>
+          </div>
+          <a href="catalogue-chat.html" class="btn btn-primary" style="margin-top:32px;">
+            Découvrir nos créations
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SEASONAL SELECTION
+  ═══════════════════════════════════ -->
+  <section class="section" style="background: linear-gradient(135deg, #F5EEF0 0%, #FAF7F4 60%, #EDF2EE 100%);">
+    <div class="container">
+      <div class="text-center reveal" style="margin-bottom:48px;">
+        <span class="section-label">Fleurs du moment</span>
+        <h2 class="section-title">La sélection de saison</h2>
+      </div>
+      <div class="grid-3" id="seasonal-flowers">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="text-center" style="margin-top:40px;">
+        <a href="catalogue-chat.html" class="btn btn-secondary">
+          <i data-lucide="flower-2"></i>
+          Voir tout le catalogue
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       TESTIMONIALS
+  ═══════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center reveal" style="margin-bottom:48px;">
+        <span class="section-label">Témoignages</span>
+        <h2 class="section-title">Ils nous ont fait confiance</h2>
+      </div>
+      <div class="grid-3">
+        <div class="testimonial-card reveal delay-1">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Nos décorations de mariage étaient absolument somptueuses. L'arche florale a fait craquer tous nos invités. Merci infiniment à toute l'équipe !"</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">S</div>
+            <div>
+              <strong>Sophie & Martin</strong>
+              <span>Mariés en juin 2025</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal delay-2">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Le simulateur de prix m'a permis de composer exactement ce que je voulais pour mon budget. Livraison rapide et fleurs magnifiques, je recommande !"</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">A</div>
+            <div>
+              <strong>Amélie R.</strong>
+              <span>Commande régulière</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal delay-3">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Le chat catalogue est très pratique ! La conseillère virtuelle m'a guidée vers des pivoines que je n'aurais jamais choisies seule — et c'était parfait."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">C</div>
+            <div>
+              <strong>Clara M.</strong>
+              <span>Cliente fidèle</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       CTA MARIAGE
+  ═══════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="cta-bg"></div>
+    <div class="container cta-inner reveal">
+      <span class="section-label" style="color:rgba(255,255,255,0.7);">Votre grand jour</span>
+      <h2 style="color:#fff; font-size:clamp(2rem,4vw,3.5rem);">Un mariage fleuri comme dans vos rêves</h2>
+      <p style="color:rgba(255,255,255,0.8); max-width:520px; margin:16px auto 32px;">
+        Partagez votre vision avec nous et recevez un devis personnalisé sous 24h. Du bouquet de mariée à la décoration complète, nous créons la féerie florale de votre mariage.
+      </p>
+      <a href="devis-mariage.html" class="btn btn-ghost btn-lg">
+        <i data-lucide="heart"></i>
+        Demander un devis gratuit
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="nav-logo-text">Atelier Galaad</span>
+          <p>Art floral parisien depuis 2012. Bouquets sur-mesure, décoration de mariage et compositions uniques pour tous vos moments précieux.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Instagram">📷</a>
+            <a href="#" class="social-link" aria-label="Pinterest">📌</a>
+            <a href="#" class="social-link" aria-label="Facebook">📘</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Navigation</h4>
+          <div class="footer-links">
+            <a href="index.html" class="footer-link">Accueil</a>
+            <a href="catalogue-chat.html" class="footer-link">Catalogue</a>
+            <a href="simulateur-prix.html" class="footer-link">Simulateur de prix</a>
+            <a href="generateur-bouquet.html" class="footer-link">Créateur de bouquet</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Services</h4>
+          <div class="footer-links">
+            <a href="devis-mariage.html" class="footer-link">Devis mariage</a>
+            <a href="#" class="footer-link">Livraison Paris</a>
+            <a href="#" class="footer-link">Abonnement fleurs</a>
+            <a href="#" class="footer-link">Cours de fleuristerie</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Contact</h4>
+          <div class="footer-links">
+            <span class="footer-link">📍 12 rue des Fleurs, Paris 6e</span>
+            <span class="footer-link">📞 01 42 XX XX XX</span>
+            <span class="footer-link">✉️ contact@ateliergalaad.fr</span>
+            <span class="footer-link">🕐 Lun–Sam : 9h–19h</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Atelier Galaad · Tous droits réservés</span>
+        <span>Fait avec 🌸 à Paris</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data/catalogue.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/home.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
