@@ -1,221 +1,205 @@
-// simulateur.js
-
-const State = {
-    arrangement: null,
-    fleurs: {}, // {id: quantity}
-    taille: 'moyen', // petit|moyen|grand
-    extras: {} // {key: boolean}
+// Mock CATALOGUE for simulator
+const CATALOGUE = {
+  fleurs: [
+    { id: 'f1', nom: 'Rose Rouge', prix: 3.50, couleurs: ['Rouge'], saison: 'Toute année', description: 'Symbole de l\'amour' },
+    { id: 'f2', nom: 'Pivoine Rose', prix: 4.50, couleurs: ['Rose'], saison: 'Printemps', description: 'Voluptueuse' },
+    { id: 'f3', nom: 'Lys Blanc', prix: 5.00, couleurs: ['Blanc'], saison: 'Toute année', description: 'Majestueux' },
+    { id: 'f4', nom: 'Tulipe', prix: 2.00, couleurs: ['Jaune', 'Rouge'], saison: 'Printemps', description: 'Colorée' },
+    { id: 'f5', nom: 'Hortensia', prix: 6.50, couleurs: ['Bleu', 'Rose'], saison: 'Été', description: 'Généreux' },
+    { id: 'f6', nom: 'Orchidée', prix: 8.00, couleurs: ['Blanc', 'Violet'], saison: 'Toute année', description: 'Élégante' }
+  ],
+  arrangements: [
+    { id: 'a1', nom: 'Bouquet Rond', prix_base: 25.00, description: 'Classique et élégant' },
+    { id: 'a2', nom: 'Bouquet Champêtre', prix_base: 30.00, description: 'Naturel et déstructuré' },
+    { id: 'a3', nom: 'Composition Piquée', prix_base: 40.00, description: 'Dans un contenant' },
+    { id: 'a4', nom: 'Centre de Table', prix_base: 45.00, description: 'Idéal pour réceptions' }
+  ]
 };
 
-const TAILLE_MULT = { petit: 0.7, moyen: 1.0, grand: 1.4 };
-const EXTRAS_PRICES = { emballage: 8, ruban: 5, carte: 3, livraison: 12, installation: 25 };
-const EXTRAS_NAMES = { emballage: 'Emballage premium', ruban: 'Ruban satin', carte: 'Carte message', livraison: 'Livraison Paris', installation: 'Installation sur place' };
+const SimState = {
+  arrangement: null,
+  fleurs: {}, // { fleurId: qty }
+  format: 'moyen',
+  extras: { emballage: false, ruban: false, carte: false, livraison: false, voeux: false },
+};
 
-let currentTotal = 0;
+const FORMAT_MULT = { petit: 0.7, moyen: 1.0, grand: 1.4 };
+const EXTRAS_PRICES = { emballage: 8, ruban: 5, carte: 3, livraison: 12, voeux: 3 };
 
 function init() {
-    renderArrangements();
-    renderFleurs();
-    recalculate();
+  renderArrangements();
+  renderFleurs();
+  setupFormatListeners();
+  setupExtrasListeners();
+  document.getElementById('sim-reset').addEventListener('click', resetAll);
+  recalculate();
 }
 
 function renderArrangements() {
-    const container = document.getElementById('arrangement-container');
-    if (!container || !window.CATALOGUE || !window.CATALOGUE.arrangements) return;
-
-    container.innerHTML = window.CATALOGUE.arrangements.map(arr => `
-        <div class="arrangement-card ${State.arrangement === arr.id ? 'selected' : ''}" onclick="selectArrangement('${arr.id}')" id="arr-${arr.id}">
-            <span class="arrangement-emoji">${arr.emoji || '🌸'}</span>
-            <span class="arrangement-name">${arr.nom}</span>
-            <span class="arrangement-price">Base: ${arr.prix_base}€</span>
-        </div>
-    `).join('');
+  const container = document.getElementById('sim-arrangements');
+  container.innerHTML = CATALOGUE.arrangements.map(a => `
+    <div class="arr-card" data-id="${a.id}" onclick="selectArrangement('${a.id}')">
+      <div class="arr-card-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+      </div>
+      <div class="arr-card-name">${a.nom}</div>
+      <div class="arr-card-price">dès ${a.prix_base.toFixed(2)}€</div>
+    </div>
+  `).join('');
 }
 
 function renderFleurs() {
-    const container = document.getElementById('fleur-container');
-    if (!container || !window.CATALOGUE || !window.CATALOGUE.fleurs) return;
-
-    container.innerHTML = window.CATALOGUE.fleurs.map(fleur => {
-        const qty = State.fleurs[fleur.id] || 0;
-        const isSelected = qty > 0;
-        return `
-            <div class="fleur-btn ${isSelected ? 'selected' : ''}" id="fleur-${fleur.id}" onclick="if(!event.target.closest('.qty-controls')) toggleFleur('${fleur.id}')">
-                <span class="fleur-emoji">${fleur.emoji || '🌿'}</span>
-                <div class="fleur-info">
-                    <span class="fleur-name">${fleur.nom}</span>
-                    <span class="fleur-price">${fleur.prix}€/tige</span>
-                </div>
-                ${isSelected ? `
-                <div class="qty-controls">
-                    <button class="qty-btn" onclick="event.stopPropagation(); changeQty('${fleur.id}', -1)">-</button>
-                    <span>${qty}</span>
-                    <button class="qty-btn" onclick="event.stopPropagation(); changeQty('${fleur.id}', 1)">+</button>
-                </div>
-                ` : ''}
-            </div>
-        `;
-    }).join('');
+  const container = document.getElementById('sim-fleurs');
+  container.innerHTML = CATALOGUE.fleurs.map(f => `
+    <div class="fleur-btn-wrapper">
+      <div class="fleur-btn" id="btn-fleur-${f.id}" onclick="toggleFleur('${f.id}')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div class="fleur-btn-inner">
+          <div class="fleur-btn-name">${f.nom}</div>
+          <div class="fleur-btn-price">${f.prix.toFixed(2)}€ / tige</div>
+        </div>
+      </div>
+      <div class="fleur-qty hidden" id="qty-fleur-${f.id}">
+        <button class="qty-btn" onclick="changeQty('${f.id}', -1)">-</button>
+        <div class="qty-val" id="val-fleur-${f.id}">1</div>
+        <button class="qty-btn" onclick="changeQty('${f.id}', 1)">+</button>
+      </div>
+    </div>
+  `).join('');
 }
 
 function selectArrangement(id) {
-    if (State.arrangement === id) {
-        State.arrangement = null;
-    } else {
-        State.arrangement = id;
-    }
-    renderArrangements();
-    recalculate();
+  SimState.arrangement = SimState.arrangement === id ? null : id;
+  document.querySelectorAll('.arr-card').forEach(el => {
+    el.classList.toggle('selected', el.dataset.id === id && SimState.arrangement === id);
+  });
+  recalculate();
 }
 
 function toggleFleur(id) {
-    if (State.fleurs[id]) {
-        delete State.fleurs[id];
-    } else {
-        State.fleurs[id] = 1;
-    }
-    renderFleurs();
-    recalculate();
+  const btn = document.getElementById(`btn-fleur-${id}`);
+  const qtyWrap = document.getElementById(`qty-fleur-${id}`);
+  
+  if (SimState.fleurs[id]) {
+    delete SimState.fleurs[id];
+    btn.classList.remove('selected');
+    qtyWrap.classList.add('hidden');
+  } else {
+    SimState.fleurs[id] = 1;
+    btn.classList.add('selected');
+    qtyWrap.classList.remove('hidden');
+    document.getElementById(`val-fleur-${id}`).innerText = '1';
+  }
+  recalculate();
 }
 
 function changeQty(id, delta) {
-    if (State.fleurs[id]) {
-        State.fleurs[id] += delta;
-        if (State.fleurs[id] <= 0) {
-            delete State.fleurs[id];
-        }
-    }
-    renderFleurs();
-    recalculate();
+  if (!SimState.fleurs[id]) return;
+  SimState.fleurs[id] += delta;
+  if (SimState.fleurs[id] < 1) SimState.fleurs[id] = 1;
+  document.getElementById(`val-fleur-${id}`).innerText = SimState.fleurs[id];
+  recalculate();
 }
 
-function selectTaille(t) {
-    State.taille = t;
-    recalculate();
+function setupFormatListeners() {
+  document.querySelectorAll('.format-card').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      SimState.format = el.dataset.format;
+      recalculate();
+    });
+  });
 }
 
-function toggleExtra(key) {
-    State.extras[key] = !State.extras[key];
-    recalculate();
+function setupExtrasListeners() {
+  document.querySelectorAll('.extra-row').forEach(el => {
+    el.addEventListener('click', () => {
+      const key = el.dataset.extra;
+      SimState.extras[key] = !SimState.extras[key];
+      el.classList.toggle('selected', SimState.extras[key]);
+      recalculate();
+    });
+  });
 }
 
 function recalculate() {
-    let base = 0;
-    const breakdown = [];
+  let total = 0;
+  const breakdown = [];
+  const mult = FORMAT_MULT[SimState.format];
 
-    // Arrangement
-    if (State.arrangement && window.CATALOGUE && window.CATALOGUE.arrangements) {
-        const arr = window.CATALOGUE.arrangements.find(a => a.id === State.arrangement);
-        if (arr) {
-            base += arr.prix_base;
-            breakdown.push({ name: \`Arrangement: \${arr.nom}\`, price: arr.prix_base });
-        }
+  if (SimState.arrangement) {
+    const arr = CATALOGUE.arrangements.find(a => a.id === SimState.arrangement);
+    const cost = arr.prix_base * mult;
+    total += cost;
+    breakdown.push({ name: `Base: ${arr.nom} (${SimState.format})`, price: cost });
+  }
+
+  for (const [id, qty] of Object.entries(SimState.fleurs)) {
+    const fleur = CATALOGUE.fleurs.find(f => f.id === id);
+    const cost = fleur.prix * qty * mult;
+    total += cost;
+    breakdown.push({ name: `${fleur.nom} (x${qty})`, price: cost });
+  }
+
+  for (const [key, active] of Object.entries(SimState.extras)) {
+    if (active) {
+      const cost = EXTRAS_PRICES[key];
+      total += cost;
+      let name = key.charAt(0).toUpperCase() + key.slice(1);
+      breakdown.push({ name: name, price: cost });
     }
+  }
 
-    // Fleurs
-    if (window.CATALOGUE && window.CATALOGUE.fleurs) {
-        let fleursTotal = 0;
-        for (const [id, qty] of Object.entries(State.fleurs)) {
-            const fleur = window.CATALOGUE.fleurs.find(f => f.id === id);
-            if (fleur) {
-                const p = fleur.prix * qty;
-                fleursTotal += p;
-                breakdown.push({ name: \`\${qty}x \${fleur.nom}\`, price: p });
-            }
-        }
-        base += fleursTotal;
-    }
-
-    // Taille
-    const mult = TAILLE_MULT[State.taille] || 1.0;
-    let total = base * mult;
-    
-    if (mult !== 1.0 && base > 0) {
-        const diff = (base * mult) - base;
-        breakdown.push({ name: \`Taille \${State.taille.charAt(0).toUpperCase() + State.taille.slice(1)} (x\${mult})\`, price: diff });
-    }
-
-    // Extras
-    for (const [key, isSelected] of Object.entries(State.extras)) {
-        if (isSelected) {
-            total += EXTRAS_PRICES[key];
-            breakdown.push({ name: EXTRAS_NAMES[key], price: EXTRAS_PRICES[key] });
-        }
-    }
-
-    updatePanel(breakdown, Math.round(total));
+  updatePanel(total, breakdown);
 }
 
-function updatePanel(breakdown, newTotal) {
-    const list = document.getElementById('price-breakdown');
-    if (list) {
-        if (breakdown.length === 0) {
-            list.innerHTML = '<li><span class="item-name" style="color:#999">Aucun élément sélectionné</span></li>';
-        } else {
-            list.innerHTML = breakdown.map(item => `
-                <li>
-                    <span class="item-name">${item.name}</span>
-                    <span class="item-price">${item.price > 0 ? '+' : ''}${Math.round(item.price)}€</span>
-                </li>
-            `).join('');
-        }
+function updatePanel(total, breakdown) {
+  const totalEl = document.getElementById('sim-total');
+  animateNumber(totalEl, total);
+
+  const bdContainer = document.getElementById('sim-breakdown');
+  if (breakdown.length === 0) {
+    bdContainer.innerHTML = '<div class="breakdown-empty">Sélectionnez une base ou des fleurs pour commencer.</div>';
+  } else {
+    bdContainer.innerHTML = breakdown.map(item => `
+      <div class="breakdown-item">
+        <span class="breakdown-name">${item.name}</span>
+        <span class="breakdown-price">${item.price.toFixed(2)}€</span>
+      </div>
+    `).join('');
+  }
+}
+
+function animateNumber(el, to) {
+  const from = parseFloat(el.innerText) || 0;
+  const duration = 400;
+  const start = performance.now();
+
+  function step(timestamp) {
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const current = from + (to - from) * progress;
+    el.innerText = current.toFixed(2);
+    if (progress < 1) {
+      requestAnimationFrame(step);
     }
-
-    const totalEl = document.getElementById('price-total');
-    if (totalEl) {
-        animateNumber(totalEl, currentTotal, newTotal);
-        currentTotal = newTotal;
-    }
-}
-
-function animateNumber(el, from, to) {
-    const duration = 500;
-    const start = performance.now();
-    
-    requestAnimationFrame(function update(time) {
-        let progress = (time - start) / duration;
-        if (progress > 1) progress = 1;
-        
-        // easeOutQuart
-        const ease = 1 - Math.pow(1 - progress, 4);
-        const current = from + (to - from) * ease;
-        
-        el.textContent = Math.round(current) + '€';
-        
-        if (progress < 1) {
-            requestAnimationFrame(update);
-        }
-    });
-}
-
-function openModal() {
-    document.getElementById('request-modal').classList.add('active');
-}
-
-function closeModal() {
-    document.getElementById('request-modal').classList.remove('active');
+  }
+  requestAnimationFrame(step);
 }
 
 function resetAll() {
-    State.arrangement = null;
-    State.fleurs = {};
-    State.taille = 'moyen';
-    State.extras = {};
-    
-    // reset radios
-    const radios = document.querySelectorAll('input[name="taille"]');
-    radios.forEach(r => {
-        if (r.value === 'moyen') r.checked = true;
-    });
+  SimState.arrangement = null;
+  SimState.fleurs = {};
+  SimState.format = 'moyen';
+  for(let k in SimState.extras) SimState.extras[k] = false;
 
-    // reset checkboxes
-    const checkboxes = document.querySelectorAll('.extras-list input[type="checkbox"]');
-    checkboxes.forEach(c => c.checked = false);
+  document.querySelectorAll('.arr-card, .fleur-btn, .extra-row').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.fleur-qty').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.format-card').forEach(el => {
+    el.classList.toggle('selected', el.dataset.format === 'moyen');
+  });
 
-    renderArrangements();
-    renderFleurs();
-    recalculate();
+  recalculate();
 }
 
-// Initialize on DOM load
 document.addEventListener('DOMContentLoaded', init);

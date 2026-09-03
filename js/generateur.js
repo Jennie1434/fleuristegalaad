@@ -1,302 +1,271 @@
-const State = {
-    style: 'champetre',
-    couleur: 'rose-pastel',
-    forme: 'rond',
-    taille: 2, // 1-3
-    selectedFleurs: [] // array of fleur ids
+const GenState = {
+  style: 'champetre',
+  couleur: 'rose-pastel',
+  forme: 'rond',
+  taille: 2, // 1-3
+  selectedFleurs: [], // array of fleur ids
 };
 
 const POSITIONS = {
-    rond: [
-        {x: 50, y: 10}, {x: 75, y: 18}, {x: 90, y: 40}, {x: 88, y: 65},
-        {x: 70, y: 82}, {x: 45, y: 88}, {x: 22, y: 80}, {x: 8, y: 58},
-        {x: 10, y: 33}, {x: 25, y: 15}, {x: 50, y: 50}, {x: 60, y: 35}
-    ],
-    cascade: [
-        {x: 70, y: 5}, {x: 80, y: 20}, {x: 60, y: 30}, {x: 75, y: 45},
-        {x: 50, y: 55}, {x: 65, y: 65}, {x: 40, y: 70}, {x: 55, y: 80},
-        {x: 30, y: 85}, {x: 45, y: 92}, {x: 20, y: 90}, {x: 35, y: 75}
-    ],
-    brassee: [
-        {x: 45, y: 45}, {x: 30, y: 30}, {x: 60, y: 35}, {x: 25, y: 55},
-        {x: 65, y: 60}, {x: 40, y: 65}, {x: 55, y: 25}, {x: 35, y: 70},
-        {x: 70, y: 45}, {x: 20, y: 40}, {x: 50, y: 75}, {x: 60, y: 70}
-    ]
+  rond: [
+    {x:50,y:8},{x:78,y:20},{x:92,y:48},{x:82,y:76},{x:58,y:90},{x:28,y:86},{x:8,y:62},{x:10,y:34},{x:28,y:14},{x:50,y:50},{x:35,y:50},{x:65,y:48}
+  ],
+  cascade: [
+    {x:72,y:5},{x:85,y:20},{x:65,y:32},{x:80,y:46},{x:55,y:56},{x:72,y:68},{x:42,y:72},{x:60,y:82},{x:30,y:86},{x:48,y:92},{x:18,y:90},{x:35,y:78}
+  ],
+  brassee: [
+    {x:48,y:45},{x:28,y:28},{x:62,y:32},{x:22,y:56},{x:68,y:60},{x:40,y:68},{x:58,y:22},{x:34,y:72},{x:72,y:42},{x:18,y:38},{x:52,y:76},{x:64,y:70}
+  ]
 };
 
+const FLOWER_COLORS = {
+  pivoine: 'linear-gradient(135deg, #E8A0B4, #C06080)',
+  rose: 'linear-gradient(135deg, #D4607A, #9B2040)',
+  tulipe: 'linear-gradient(135deg, #E85878, #A03050)',
+  hortensia: 'linear-gradient(135deg, #8090D0, #5060A8)',
+  lys: 'linear-gradient(135deg, #F5E8D0, #D4A870)',
+  freesia: 'linear-gradient(135deg, #F0E060, #C8A820)',
+  renoncule: 'linear-gradient(135deg, #F0A060, #C07030)',
+  eucalyptus: 'linear-gradient(135deg, #80B090, #508060)',
+  mimosa: 'linear-gradient(135deg, #F8E040, #D0B000)',
+  anemone: 'linear-gradient(135deg, #6040A0, #402080)',
+  lavande: 'linear-gradient(135deg, #A080C0, #7050A0)',
+  orchidee: 'linear-gradient(135deg, #D090C0, #A06090)',
+  dahlia: 'linear-gradient(135deg, #E06040, #B03020)',
+  gypsophile: 'linear-gradient(135deg, #F8F0F4, #E0D0D8)',
+  muguet: 'linear-gradient(135deg, #E8F0E8, #C0D8C0)',
+};
+
+const FLOWER_SVG = `<svg viewBox="0 0 100 100" width="32" height="32" fill="rgba(255,255,255,0.9)"><circle cx="50" cy="50" r="15"/><ellipse cx="50" cy="20" rx="12" ry="18" /><ellipse cx="50" cy="80" rx="12" ry="18"/><ellipse cx="20" cy="50" rx="18" ry="12"/><ellipse cx="80" cy="50" rx="18" ry="12"/><ellipse cx="29" cy="29" rx="10" ry="16" transform="rotate(45 29 29)"/><ellipse cx="71" cy="29" rx="10" ry="16" transform="rotate(-45 71 29)"/><ellipse cx="29" cy="71" rx="10" ry="16" transform="rotate(-45 29 71)"/><ellipse cx="71" cy="71" rx="10" ry="16" transform="rotate(45 71 71)"/></svg>`;
+
+const STYLE_ICONS = {
+  champetre: 'leaf',
+  classique: 'crown',
+  moderne: 'zap',
+  boheme: 'feather',
+  tropical: 'sun'
+};
+
+const FORMAT_MULT = { 1: 1, 2: 1.5, 3: 2.2 };
+
 document.addEventListener('DOMContentLoaded', () => {
-    init();
+  init();
+  // Ensure default state on mobile is visible
+  if (window.innerWidth <= 900) {
+    document.getElementById('panel-left').classList.add('active-tab');
+  }
 });
 
 function init() {
-    if (!window.CATALOGUE) {
-        console.error("CATALOGUE not loaded");
-        // Mock fallback if catalogue.js doesn't exist yet
-        window.CATALOGUE = {
-            styles: [{id: 'champetre', nom: 'Champêtre'}, {id: 'classique', nom: 'Classique'}, {id: 'moderne', nom: 'Moderne'}],
-            couleurs: [{id: 'rose-pastel', nom: 'Rose Pastel', hex: '#FFD1DC'}, {id: 'blanc', nom: 'Blanc Pur', hex: '#FFFFFF'}, {id: 'rouge', nom: 'Rouge Passion', hex: '#E60000'}],
-            fleurs: [
-                {id: 'rose', nom: 'Rose', emoji: '🌹', prix: 4},
-                {id: 'tulipe', nom: 'Tulipe', emoji: '🌷', prix: 3},
-                {id: 'tournesol', nom: 'Tournesol', emoji: '🌻', prix: 5},
-                {id: 'lys', nom: 'Lys', emoji: '⚜️', prix: 6},
-                {id: 'marguerite', nom: 'Marguerite', emoji: '🌼', prix: 2},
-                {id: 'fleur-cerisier', nom: 'Cerisier', emoji: '🌸', prix: 3}
-            ]
-        };
-    }
-    
-    // Set initial defaults if possible
-    if(window.CATALOGUE.styles.length > 0) State.style = window.CATALOGUE.styles[0].id;
-    if(window.CATALOGUE.couleurs.length > 0) State.couleur = window.CATALOGUE.couleurs[0].id;
-    
-    renderStyleOptions();
-    renderCouleurOptions();
-    renderFormeOptions();
-    renderFleursGrid();
-    
-    document.getElementById('taille-slider').addEventListener('input', (e) => {
-        State.taille = parseInt(e.target.value);
-        updatePrice();
-        renderBouquet();
-    });
-    
-    document.getElementById('btn-shuffle').addEventListener('click', shuffle);
-    document.getElementById('btn-copy').addEventListener('click', copyComposition);
-    
-    updatePrice();
-    generateName();
+  renderStyleCards();
+  renderCouleurs();
+  renderFlowerGrid();
+  renderBouquet();
+  updateRightFooter();
 }
 
-function renderStyleOptions() {
-    const container = document.getElementById('style-container');
-    container.innerHTML = '';
-    window.CATALOGUE.styles.forEach(style => {
-        const chip = document.createElement('div');
-        chip.className = `style-chip ${State.style === style.id ? 'selected' : ''}`;
-        chip.textContent = style.nom;
-        chip.onclick = () => selectStyle(style.id);
-        container.appendChild(chip);
-    });
+function renderStyleCards() {
+  const container = document.getElementById('style-container');
+  if (!container || !window.CATALOGUE || !CATALOGUE.styles) return;
+  
+  container.innerHTML = CATALOGUE.styles.map(style => `
+    <div class="style-card ${GenState.style === style.id ? 'selected' : ''}" onclick="selectStyle('${style.id}')">
+      <div class="style-card-icon">
+        <i data-lucide="${STYLE_ICONS[style.id] || 'flower'}"></i>
+      </div>
+      <div class="style-card-name">${style.nom}</div>
+    </div>
+  `).join('');
+  if (window.lucide) lucide.createIcons();
 }
 
-function renderCouleurOptions() {
-    const container = document.getElementById('couleur-container');
-    container.innerHTML = '';
-    window.CATALOGUE.couleurs.forEach(couleur => {
-        const swatch = document.createElement('div');
-        swatch.className = `color-swatch ${State.couleur === couleur.id ? 'selected' : ''}`;
-        swatch.style.backgroundColor = couleur.hex;
-        swatch.title = couleur.nom;
-        swatch.onclick = () => selectCouleur(couleur.id);
-        container.appendChild(swatch);
-    });
+function renderCouleurs() {
+  const container = document.getElementById('color-container');
+  if (!container || !window.CATALOGUE || !CATALOGUE.couleurs) return;
+  
+  container.innerHTML = CATALOGUE.couleurs.map(couleur => `
+    <div class="color-swatch-item ${GenState.couleur === couleur.id ? 'selected' : ''}" onclick="selectCouleur('${couleur.id}')">
+      <div class="color-swatch-circle" style="background: ${couleur.hex};"></div>
+      <div class="swatch-name">${couleur.nom}</div>
+    </div>
+  `).join('');
 }
 
-function renderFormeOptions() {
-    document.querySelectorAll('.forme-card').forEach(card => {
-        card.classList.toggle('selected', card.dataset.forme === State.forme);
-        card.onclick = () => selectForme(card.dataset.forme);
-    });
-}
-
-function renderFleursGrid() {
-    const grid = document.getElementById('fleurs-grid');
-    grid.innerHTML = '';
-    window.CATALOGUE.fleurs.forEach(fleur => {
-        const isSelected = State.selectedFleurs.includes(fleur.id);
-        const card = document.createElement('div');
-        card.className = `flower-pick-card ${isSelected ? 'selected' : ''}`;
-        card.innerHTML = `
-            <div class="selected-badge"><i data-lucide="check" class="w-3 h-3"></i></div>
-            <div class="text-3xl mb-1">${fleur.emoji}</div>
-            <div class="text-xs font-medium">${fleur.nom}</div>
-            <div class="text-xs text-neutral-500">${fleur.prix}€</div>
-        `;
-        card.onclick = () => toggleFleur(fleur.id);
-        grid.appendChild(card);
-    });
-    
-    if (window.lucide) {
-        lucide.createIcons();
-    }
+function renderFlowerGrid() {
+  const container = document.getElementById('flower-grid');
+  if (!container || !window.CATALOGUE || !CATALOGUE.fleurs) return;
+  
+  container.innerHTML = CATALOGUE.fleurs.map(fleur => {
+    const isSelected = GenState.selectedFleurs.includes(fleur.id);
+    return `
+      <div class="flower-pick-card ${isSelected ? 'selected' : ''}" onclick="toggleFleur('${fleur.id}')" id="flower-card-${fleur.id}">
+        <div class="selected-badge"><i data-lucide="check" style="width:12px;height:12px;"></i></div>
+        <div class="flower-pick-icon">
+          <i data-lucide="flower-2"></i>
+        </div>
+        <div class="flower-pick-name">${fleur.nom}</div>
+        <div class="flower-pick-price">${fleur.prix}€ / tige</div>
+      </div>
+    `;
+  }).join('');
+  if (window.lucide) lucide.createIcons();
 }
 
 function selectStyle(id) {
-    State.style = id;
-    renderStyleOptions();
-    generateName();
+  GenState.style = id;
+  renderStyleCards();
+  document.getElementById('bouquet-name').innerText = generateName();
 }
 
 function selectCouleur(id) {
-    State.couleur = id;
-    renderCouleurOptions();
-    generateName();
+  GenState.couleur = id;
+  renderCouleurs();
+  document.getElementById('bouquet-name').innerText = generateName();
 }
 
 function selectForme(id) {
-    State.forme = id;
-    renderFormeOptions();
-    renderBouquet();
+  GenState.forme = id;
+  document.querySelectorAll('.forme-card').forEach(c => c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  renderBouquet();
+}
+
+function setTaille(val) {
+  GenState.taille = parseInt(val);
+  renderBouquet();
+  updateRightFooter();
 }
 
 function toggleFleur(id) {
-    const index = State.selectedFleurs.indexOf(id);
-    if (index > -1) {
-        State.selectedFleurs.splice(index, 1);
+  const index = GenState.selectedFleurs.indexOf(id);
+  if (index > -1) {
+    GenState.selectedFleurs.splice(index, 1);
+  } else {
+    if (GenState.selectedFleurs.length < 12) {
+      GenState.selectedFleurs.push(id);
     } else {
-        if (State.selectedFleurs.length < 12) {
-            State.selectedFleurs.push(id);
-        } else {
-            alert('Vous avez atteint le nombre maximum de 12 fleurs différentes.');
-            return;
-        }
+      if (window.showToast) window.showToast('Maximum 12 fleurs par composition');
+      return;
     }
-    renderFleursGrid();
-    updatePrice();
-    generateName();
-    renderBouquet();
-    
-    // Update summary
-    const summary = document.getElementById('composition-summary');
-    if (State.selectedFleurs.length === 0) {
-        summary.textContent = 'Aucune fleur sélectionnée';
-        summary.classList.add('italic', 'text-neutral-500');
-    } else {
-        const names = State.selectedFleurs.map(fid => {
-            const f = window.CATALOGUE.fleurs.find(f => f.id === fid);
-            return f ? f.nom : fid;
-        });
-        summary.textContent = names.join(', ');
-        summary.classList.remove('italic', 'text-neutral-500');
-    }
+  }
+  
+  const card = document.getElementById(`flower-card-${id}`);
+  if (card) {
+    if (index > -1) card.classList.remove('selected');
+    else card.classList.add('selected');
+  }
+  
+  renderBouquet();
+  updateRightFooter();
 }
 
-function updatePrice() {
-    const total = State.selectedFleurs.reduce((sum, fid) => {
-        const fleur = window.CATALOGUE.fleurs.find(f => f.id === fid);
-        return sum + (fleur ? fleur.prix : 0);
-    }, 0);
+function renderBouquet() {
+  const canvas = document.getElementById('bouquet-canvas');
+  canvas.innerHTML = '';
+  
+  if (GenState.selectedFleurs.length === 0) {
+    canvas.innerHTML = '<div class="preview-empty">Sélectionnez des fleurs pour composer votre bouquet.</div>';
+    document.getElementById('bouquet-name').innerText = generateName();
+    return;
+  }
+  
+  const positions = POSITIONS[GenState.forme] || POSITIONS['rond'];
+  
+  GenState.selectedFleurs.forEach((fleurId, i) => {
+    const pos = positions[i % positions.length];
+    const size = 60 + (GenState.taille * 8);
+    const bg = FLOWER_COLORS[fleurId] || FLOWER_COLORS.rose;
     
-    // Calculate final price: total base prices * size multiplier * stem multiplier (default 3)
-    const multiplier = State.taille * 3;
-    const finalPrice = total * multiplier;
+    const item = document.createElement('div');
+    item.className = 'bouquet-flower-item';
+    item.style.left = `${pos.x}%`;
+    item.style.top = `${pos.y}%`;
+    item.style.width = `${size}px`;
+    item.style.height = `${size}px`;
+    item.style.background = bg;
+    item.style.transform = 'translate(-50%, -50%)';
+    item.innerHTML = FLOWER_SVG;
     
-    document.getElementById('price-total').textContent = finalPrice > 0 ? `${finalPrice} €` : '0 €';
+    canvas.appendChild(item);
+  });
+  
+  document.getElementById('bouquet-name').innerText = generateName();
 }
 
 function generateName() {
-    const styleObj = window.CATALOGUE.styles.find(s => s.id === State.style) || {nom: 'Sur-mesure'};
-    const colObj = window.CATALOGUE.couleurs.find(c => c.id === State.couleur) || {nom: 'Coloré'};
-    
-    let suffix = '';
-    if (State.selectedFleurs.length > 0) {
-        const firstFleur = window.CATALOGUE.fleurs.find(f => f.id === State.selectedFleurs[0]);
-        if (State.selectedFleurs.length === 1) {
-            suffix = ` aux ${firstFleur ? firstFleur.nom : ''}s`;
-        } else {
-            const secondFleur = window.CATALOGUE.fleurs.find(f => f.id === State.selectedFleurs[1]);
-            suffix = ` ${firstFleur ? firstFleur.nom : ''} & ${secondFleur ? secondFleur.nom : ''}`;
-        }
-    }
-    
-    document.getElementById('bouquet-name').textContent = `Bouquet ${styleObj.nom} ${colObj.nom}${suffix}`;
-}
-
-function renderBouquet(noise = false) {
-    const canvas = document.getElementById('bouquet-canvas');
-    const emptyState = document.getElementById('empty-state');
-    
-    // Clear old flowers
-    canvas.querySelectorAll('.bouquet-flower').forEach(el => el.remove());
-    
-    if (State.selectedFleurs.length === 0) {
-        emptyState.style.display = 'flex';
-        return;
-    }
-    
-    emptyState.style.display = 'none';
-    
-    const positions = POSITIONS[State.forme] || POSITIONS.rond;
-    
-    // Fill array of flower emojis to display
-    const flowersToDisplay = [];
-    for (let i = 0; i < 12; i++) {
-        // Cycle through selected flowers to fill up to 12 positions
-        if (State.selectedFleurs.length > 0) {
-            const fid = State.selectedFleurs[i % State.selectedFleurs.length];
-            const fleur = window.CATALOGUE.fleurs.find(f => f.id === fid);
-            if (fleur) {
-                flowersToDisplay.push(fleur.emoji);
-            }
-        }
-    }
-    
-    // Size scaling
-    const scaleMap = {1: 0.8, 2: 1, 3: 1.2};
-    const scale = scaleMap[State.taille] || 1;
-    
-    positions.forEach((pos, i) => {
-        if (i >= flowersToDisplay.length) return;
-        
-        const emoji = flowersToDisplay[i];
-        const el = document.createElement('div');
-        el.className = 'bouquet-flower';
-        el.textContent = emoji;
-        
-        let offsetX = noise ? (Math.random() - 0.5) * 30 : 0;
-        let offsetY = noise ? (Math.random() - 0.5) * 30 : 0;
-        let rot = noise ? (Math.random() - 0.5) * 60 : (Math.random() - 0.5) * 30;
-        
-        // Center alignment adjustments
-        el.style.left = `calc(${pos.x}% - 30px)`;
-        el.style.top = `calc(${pos.y}% - 30px)`;
-        el.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale}) rotate(${rot}deg)`;
-        el.style.zIndex = Math.floor(pos.y); // lower flowers overlay higher ones
-        
-        canvas.appendChild(el);
-        
-        // entry animation
-        if (noise && el.animate) {
-            el.animate([
-                { transform: `translate(0px, 0px) scale(0) rotate(0deg)` },
-                { transform: `translate(${offsetX}px, ${offsetY}px) scale(${scale}) rotate(${rot}deg)` }
-            ], {
-                duration: 400 + Math.random() * 200,
-                easing: 'ease-out',
-                fill: 'forwards'
-            });
-        }
-    });
+  const styleNames = { champetre:'Champêtre', classique:'Classique', moderne:'Moderne', boheme:'Bohème', tropical:'Tropical' };
+  
+  let couleurObj = null;
+  if (window.CATALOGUE && CATALOGUE.couleurs) {
+    couleurObj = CATALOGUE.couleurs.find(c => c.id === GenState.couleur);
+  }
+  
+  let fleurNames = [];
+  if (window.CATALOGUE && CATALOGUE.fleurs && GenState.selectedFleurs.length > 0) {
+    fleurNames = GenState.selectedFleurs.slice(0, 2).map(id => {
+      const f = CATALOGUE.fleurs.find(f => f.id === id);
+      return f ? f.nom : '';
+    }).filter(Boolean);
+  }
+  
+  let name = `Bouquet ${styleNames[GenState.style] || ''}`;
+  if (couleurObj) name += ` — ${couleurObj.nom}`;
+  if (fleurNames.length > 0) name += ` aux ${fleurNames.join(' & ')}`;
+  
+  return name;
 }
 
 function shuffle() {
-    renderBouquet(true);
+  const canvas = document.getElementById('bouquet-canvas');
+  const items = canvas.querySelectorAll('.bouquet-flower-item');
+  items.forEach(item => {
+    const currentLeft = parseFloat(item.style.left);
+    const currentTop = parseFloat(item.style.top);
+    
+    const offsetLeft = (Math.random() - 0.5) * 15;
+    const offsetTop = (Math.random() - 0.5) * 15;
+    
+    item.style.left = `${Math.max(5, Math.min(95, currentLeft + offsetLeft))}%`;
+    item.style.top = `${Math.max(5, Math.min(95, currentTop + offsetTop))}%`;
+  });
+}
+
+function updateRightFooter() {
+  const compText = document.getElementById('composition-text');
+  const priceTotal = document.getElementById('price-total');
+  
+  if (GenState.selectedFleurs.length === 0) {
+    compText.innerText = 'Aucune fleur sélectionnée';
+    priceTotal.innerText = '0 €';
+    return;
+  }
+  
+  if (!window.CATALOGUE || !CATALOGUE.fleurs) return;
+  
+  const names = GenState.selectedFleurs.map(id => {
+    const f = CATALOGUE.fleurs.find(f => f.id === id);
+    return f ? f.nom : id;
+  });
+  
+  compText.innerText = names.join(', ');
+  
+  let basePrice = 0;
+  GenState.selectedFleurs.forEach(id => {
+    const f = CATALOGUE.fleurs.find(f => f.id === id);
+    if (f) basePrice += f.prix * 3; // 3 tiges par fleur par défaut pour faire un bouquet
+  });
+  
+  const total = basePrice * (FORMAT_MULT[GenState.taille] || 1);
+  priceTotal.innerText = `${Math.round(total)} €`;
 }
 
 function copyComposition() {
-    if (State.selectedFleurs.length === 0) {
-        alert("Ajoutez des fleurs d'abord !");
-        return;
-    }
-    const names = State.selectedFleurs.map(fid => {
-        const f = window.CATALOGUE.fleurs.find(f => f.id === fid);
-        return f ? f.nom : fid;
-    });
-    const text = `Ma composition Atelier Galaad:\n- ${names.join('\n- ')}\n\nStyle: ${State.style}, Forme: ${State.forme}\nPrix estimé: ${document.getElementById('price-total').textContent}`;
-    
-    navigator.clipboard.writeText(text).then(() => {
-        const btn = document.getElementById('btn-copy');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = `<i data-lucide="check" class="w-4 h-4 mr-2"></i> Copié !`;
-        if (window.lucide) {
-            lucide.createIcons();
-        }
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            if (window.lucide) {
-                lucide.createIcons();
-            }
-        }, 2000);
-    });
+  const text = document.getElementById('bouquet-name').innerText + '\n' + document.getElementById('composition-text').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    if (window.showToast) window.showToast('Composition copiée !');
+  }).catch(err => console.error('Error copying', err));
+}
+
+function orderBouquet() {
+  window.location.href = 'simulateur-prix.html';
 }

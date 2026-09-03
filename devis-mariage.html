@@ -3,307 +3,476 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devis Mariage — Atelier Galaad</title>
-    <meta name="description" content="Demandez votre devis pour un mariage fleuri avec Atelier Galaad.">
+    <title>Devis Mariage | Atelier Galaad</title>
+    <meta name="description" content="Estimez le coût de vos compositions florales de mariage avec notre simulateur en ligne.">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/devis.css">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="css/chatbot-widget.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <nav class="nav" id="main-nav" data-transparent="false">
+
+    <nav class="nav nav-scrolled" id="main-nav" data-transparent="false">
         <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="assets/images/logo.jpg" alt="Atelier Galaad Logo" onerror="this.src=''; this.alt='Atelier Galaad';">
-            </a>
+            <a href="index.html" class="logo">Atelier Galaad</a>
             <div class="nav-links">
                 <a href="index.html">Accueil</a>
                 <a href="catalogue.html">Catalogue</a>
-                <a href="devis-mariage.html" class="active">Mariages</a>
-                <a href="contact.html">Contact</a>
+                <a href="simulateur.html">Simulateur</a>
+                <a href="createur.html">Créateur</a>
+                <a href="devis-mariage.html" class="active">Devis Mariage</a>
             </div>
-            <button class="hamburger" id="hamburger" aria-label="Menu">
+            <button class="hamburger" aria-label="Menu">
                 <i data-lucide="menu"></i>
             </button>
         </div>
     </nav>
 
-    <header class="page-header">
-        <div class="header-content">
-            <h1>Votre Mariage de Rêve</h1>
-            <p>Construisons ensemble la scénographie florale de votre grand jour</p>
+    <header class="devis-page-header reveal">
+        <div class="container text-center" style="position: relative; z-index: 2;">
+            <i data-lucide="heart" style="stroke: white; width: 48px; height: 48px; margin-bottom: 24px;"></i>
+            <h1>Devis Mariage</h1>
+            <p>Estimez le budget floral de votre grand jour en quelques étapes.</p>
         </div>
     </header>
 
-    <main class="devis-page">
-        <div class="devis-container">
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
+    <main class="wizard-container" style="margin-top: 40px; margin-bottom: 80px;">
+        
+        <div class="wizard-header">
+            <div class="wizard-steps">
+                <div class="step-bubble active">1</div>
+                <div class="step-bubble">2</div>
+                <div class="step-bubble">3</div>
+                <div class="step-bubble">4</div>
+                <div class="step-bubble">5</div>
+            </div>
+            <div class="wizard-labels">
+                <span>Date & Lieu</span>
+                <span>Style</span>
+                <span>Compositions</span>
+                <span>Options</span>
+                <span>Récapitulatif</span>
+            </div>
+            <div class="progress-bar" style="margin-top: 24px;">
+                <div class="progress-fill" id="prog" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <form id="devis-form" style="margin-top: 48px;">
+            
+            <!-- STEP 1 -->
+            <div class="step-panel active" id="step-1">
+                <div class="step-section">
+                    <h2 class="step-section-title">Date & Lieu</h2>
+                    <p class="step-section-sub">Quand et où aura lieu votre événement ?</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+                        <div>
+                            <label class="form-label">Date du mariage</label>
+                            <input type="date" class="form-control" id="date-input" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Ville</label>
+                            <select class="form-control" id="city-select">
+                                <option value="" disabled selected>Sélectionnez une ville</option>
+                                <option value="Paris">Paris</option>
+                                <option value="Lyon">Lyon</option>
+                                <option value="Marseille">Marseille</option>
+                                <option value="Bordeaux">Bordeaux</option>
+                                <option value="Nice">Nice</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 40px;">
+                        <label class="form-label">Nombre d'invités</label>
+                        <input type="range" id="guests-range" min="20" max="500" step="10" value="120" style="width: 100%; margin-top: 12px;">
+                        <div class="slider-display" id="guests-display">120 invités</div>
+                    </div>
+
+                    <label class="form-label" style="margin-bottom: 16px; display: block;">Type de lieu (obligatoire)</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="option-card" onclick="devisApp.selectVenue('domaine')" id="venue-domaine">
+                            <div class="option-card-icon"><i data-lucide="home"></i></div>
+                            <div class="option-card-label">Domaine / Château</div>
+                        </div>
+                        <div class="option-card" onclick="devisApp.selectVenue('eglise')" id="venue-eglise">
+                            <div class="option-card-icon"><i data-lucide="church"></i></div>
+                            <div class="option-card-label">Édifice Religieux</div>
+                        </div>
+                        <div class="option-card" onclick="devisApp.selectVenue('jardin')" id="venue-jardin">
+                            <div class="option-card-icon"><i data-lucide="tree-pine"></i></div>
+                            <div class="option-card-label">Extérieur / Jardin</div>
+                        </div>
+                        <div class="option-card" onclick="devisApp.selectVenue('plage')" id="venue-plage">
+                            <div class="option-card-icon"><i data-lucide="waves"></i></div>
+                            <div class="option-card-label">Bord de mer</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="step-indicators" id="step-indicators">
-                    <div class="step-indicator active">1</div>
-                    <div class="step-indicator">2</div>
-                    <div class="step-indicator">3</div>
-                    <div class="step-indicator">4</div>
-                    <div class="step-indicator">5</div>
-                </div>
-                <div class="step-labels">
-                    <span>Date & Lieu</span>
-                    <span>Style & Couleurs</span>
-                    <span>Compositions</span>
-                    <span>Options</span>
-                    <span>Récapitulatif</span>
+                
+                <div class="step-actions">
+                    <div></div>
+                    <button type="button" class="btn btn-primary" onclick="devisApp.nextStep()">Suivant</button>
                 </div>
             </div>
 
-            <form id="devis-form" onsubmit="event.preventDefault(); handleSubmit();">
-                <!-- Step 1: Date & Lieu -->
-                <div class="step-panel active" id="step-1">
-                    <h2>Date et Lieu</h2>
-                    <div class="form-group">
-                        <label for="date-mariage">Date du mariage *</label>
-                        <input type="date" id="date-mariage" name="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="ville-mariage">Ville / Code Postal *</label>
-                        <input type="text" id="ville-mariage" name="ville" placeholder="Ex: Paris 75001" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="invites-mariage">Nombre d'invités : <span id="invites-val">100</span></label>
-                        <input type="range" id="invites-mariage" name="invites" min="10" max="500" value="100" oninput="document.getElementById('invites-val').innerText = this.value">
-                    </div>
-                    <div class="form-group">
-                        <label for="lieu-mariage">Type de lieu *</label>
-                        <select id="lieu-mariage" name="lieu" required>
-                            <option value="">Sélectionnez un lieu</option>
-                            <option value="eglise">Église</option>
-                            <option value="mairie">Mairie</option>
-                            <option value="domaine">Domaine</option>
-                            <option value="plage">Plage</option>
-                            <option value="jardin">Jardin</option>
-                        </select>
-                    </div>
-                </div>
+            <!-- STEP 2 -->
+            <div class="step-panel" id="step-2">
+                <div class="step-section">
+                    <h2 class="step-section-title">Style & Couleurs</h2>
+                    <p class="step-section-sub">Définissez l'atmosphère de votre mariage.</p>
 
-                <!-- Step 2: Style & Couleurs -->
-                <div class="step-panel" id="step-2">
-                    <h2>Style & Couleurs</h2>
-                    <div class="form-group">
-                        <label>Style de l'événement</label>
-                        <div class="options-grid" id="style-options">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Palette de couleurs (jusqu'à 3)</label>
-                        <div class="color-grid" id="color-options">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 3: Compositions -->
-                <div class="step-panel" id="step-3">
-                    <h2>Compositions Florales</h2>
-                    
-                    <div class="composition-section">
-                        <h3>Bouquet de la mariée</h3>
-                        <div class="options-grid">
-                            <label class="option-card radio-card">
-                                <input type="radio" name="bouquet" value="simple" data-price="120">
-                                <div class="card-content">
-                                    <h4>Simple & Élégant</h4>
-                                    <p>120 €</p>
-                                </div>
-                            </label>
-                            <label class="option-card radio-card">
-                                <input type="radio" name="bouquet" value="luxe" data-price="250">
-                                <div class="card-content">
-                                    <h4>Luxe & Volume</h4>
-                                    <p>250 €</p>
-                                </div>
-                            </label>
-                            <label class="option-card radio-card">
-                                <input type="radio" name="bouquet" value="prestige" data-price="450">
-                                <div class="card-content">
-                                    <h4>Prestige Sur-Mesure</h4>
-                                    <p>450 €</p>
-                                </div>
-                            </label>
-                            <label class="option-card radio-card">
-                                <input type="radio" name="bouquet" value="none" data-price="0" checked>
-                                <div class="card-content">
-                                    <h4>Aucun</h4>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="composition-section qty-section">
-                        <div class="qty-label">
-                            <h3>Bouquets Demoiselles d'Honneur (45€/u)</h3>
-                        </div>
-                        <div class="qty-control">
-                            <button type="button" onclick="updateQty('demoiselles', -1)">-</button>
-                            <span id="qty-demoiselles">0</span>
-                            <button type="button" onclick="updateQty('demoiselles', 1)">+</button>
-                        </div>
-                    </div>
-
-                    <div class="composition-section qty-section">
-                        <div class="qty-label">
-                            <h3>Boutonnières (15€/u)</h3>
-                        </div>
-                        <div class="qty-control">
-                            <button type="button" onclick="updateQty('boutonnieres', -1)">-</button>
-                            <span id="qty-boutonnieres">0</span>
-                            <button type="button" onclick="updateQty('boutonnieres', 1)">+</button>
-                        </div>
-                    </div>
-
-                    <div class="composition-section qty-section">
-                        <div class="qty-label">
-                            <h3>Centres de table (80€/u)</h3>
-                        </div>
-                        <div class="qty-control">
-                            <button type="button" onclick="updateQty('centres', -1)">-</button>
-                            <span id="qty-centres">0</span>
-                            <button type="button" onclick="updateQty('centres', 1)">+</button>
-                        </div>
-                    </div>
-
-                    <div class="composition-section">
-                        <label class="toggle-row">
-                            <h3>Arche Florale (à partir de 600€)</h3>
-                            <div class="toggle">
-                                <input type="checkbox" id="arche-toggle" onchange="document.getElementById('arche-options').style.display = this.checked ? 'block' : 'none'">
-                                <span class="slider"></span>
-                            </div>
-                        </label>
-                        <div id="arche-options" style="display: none; margin-top: 15px;">
-                            <div class="options-grid">
-                                <label class="option-card radio-card">
-                                    <input type="radio" name="arche_style" value="partielle" data-price="600" checked>
-                                    <div class="card-content">
-                                        <h4>Fleurissement partiel</h4>
-                                        <p>600 €</p>
-                                    </div>
-                                </label>
-                                <label class="option-card radio-card">
-                                    <input type="radio" name="arche_style" value="totale" data-price="1200">
-                                    <div class="card-content">
-                                        <h4>Fleurissement total</h4>
-                                        <p>1200 €</p>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Step 4: Options -->
-                <div class="step-panel" id="step-4">
-                    <h2>Options Supplémentaires</h2>
-                    <div class="options-list">
-                        <label class="toggle-row">
-                            <div>
-                                <h3>Chemin de table en feuillage</h3>
-                                <p>30€ / mètre (calculé selon tables)</p>
-                            </div>
-                            <div class="toggle">
-                                <input type="checkbox" name="extra_chemin" id="extra_chemin" data-price="150">
-                                <span class="slider"></span>
-                            </div>
-                        </label>
-                        <label class="toggle-row">
-                            <div>
-                                <h3>Pétales pour sortie de cérémonie</h3>
-                                <p>50€ le panier</p>
-                            </div>
-                            <div class="toggle">
-                                <input type="checkbox" name="extra_petales" data-price="50">
-                                <span class="slider"></span>
-                            </div>
-                        </label>
-                        <label class="toggle-row">
-                            <div>
-                                <h3>Couronne de fleurs mariée</h3>
-                                <p>85€</p>
-                            </div>
-                            <div class="toggle">
-                                <input type="checkbox" name="extra_couronne" data-price="85">
-                                <span class="slider"></span>
-                            </div>
-                        </label>
-                        <label class="toggle-row">
-                            <div>
-                                <h3>Livraison sur site</h3>
-                                <p>Forfait 100€ (selon distance)</p>
-                            </div>
-                            <div class="toggle">
-                                <input type="checkbox" name="extra_livraison" data-price="100" checked>
-                                <span class="slider"></span>
-                            </div>
-                        </label>
-                        <label class="toggle-row">
-                            <div>
-                                <h3>Installation et démontage</h3>
-                                <p>Forfait 250€</p>
-                            </div>
-                            <div class="toggle">
-                                <input type="checkbox" name="extra_installation" data-price="250">
-                                <span class="slider"></span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Step 5: Récapitulatif -->
-                <div class="step-panel" id="step-5">
-                    <h2>Récapitulatif de votre demande</h2>
-                    
-                    <div class="recap-content" id="recap-content">
+                    <label class="form-label" style="margin-bottom: 16px; display: block;">Style floral (obligatoire)</label>
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px;" id="styles-container">
                         <!-- Populated by JS -->
                     </div>
 
-                    <div class="contact-form-section">
-                        <h3>Vos coordonnées</h3>
-                        <div class="form-group">
-                            <label for="contact-nom">Nom et Prénom *</label>
-                            <input type="text" id="contact-nom" name="nom" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contact-email">Email *</label>
-                            <input type="email" id="contact-email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contact-phone">Téléphone *</label>
-                            <input type="tel" id="contact-phone" name="phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contact-message">Message supplémentaire</label>
-                            <textarea id="contact-message" name="message" rows="3"></textarea>
-                        </div>
+                    <label class="form-label" style="margin-bottom: 16px; display: block;">Palette de couleurs</label>
+                    <div class="color-palette" id="couleurs-container">
+                        <!-- Populated by JS -->
                     </div>
                 </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn btn-outline" id="btn-prev" onclick="prevStep()" style="display: none;">Retour</button>
-                    <button type="button" class="btn btn-primary" id="btn-next" onclick="nextStep()">Suivant</button>
-                    <button type="submit" class="btn btn-primary" id="btn-submit" style="display: none;">Envoyer la demande</button>
+                
+                <div class="step-actions">
+                    <button type="button" class="btn btn-outline" onclick="devisApp.prevStep()">Précédent</button>
+                    <button type="button" class="btn btn-primary" onclick="devisApp.nextStep()">Suivant</button>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="step-panel" id="step-3">
+                <div class="step-section">
+                    <h2 class="step-section-title">Compositions Florales</h2>
+                    <p class="step-section-sub">Personnalisez vos arrangements pour le jour J.</p>
+
+                    <div style="margin-bottom: 40px;">
+                        <label class="form-label" style="margin-bottom: 16px; display: block;">Bouquet de la Mariée</label>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="option-card flex-row" onclick="devisApp.selectBouquet('simple')" id="bouquet-simple" style="display: flex; justify-content: space-between; align-items: center; text-align: left; padding: 16px 24px;">
+                                <div>
+                                    <div class="option-card-label">Simple</div>
+                                    <div class="option-card-desc" style="margin-top: 2px;">Élégant et épuré</div>
+                                </div>
+                                <div class="option-card-price">120 €</div>
+                            </div>
+                            <div class="option-card flex-row selected" onclick="devisApp.selectBouquet('luxe')" id="bouquet-luxe" style="display: flex; justify-content: space-between; align-items: center; text-align: left; padding: 16px 24px;">
+                                <div>
+                                    <div class="option-card-label">Luxe</div>
+                                    <div class="option-card-desc" style="margin-top: 2px;">Généreux et travaillé</div>
+                                </div>
+                                <div class="option-card-price">250 €</div>
+                            </div>
+                            <div class="option-card flex-row" onclick="devisApp.selectBouquet('prestige')" id="bouquet-prestige" style="display: flex; justify-content: space-between; align-items: center; text-align: left; padding: 16px 24px;">
+                                <div>
+                                    <div class="option-card-label">Prestige</div>
+                                    <div class="option-card-desc" style="margin-top: 2px;">Création spectaculaire sur-mesure</div>
+                                </div>
+                                <div class="option-card-price">450 €</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border: 1px solid var(--border); border-radius: 12px;">
+                            <div>
+                                <div style="font-family: var(--font-serif); font-size: 1.1rem;">Bouquets Demoiselles</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">65 € / unité</div>
+                            </div>
+                            <div class="qty-ctrl">
+                                <button type="button" onclick="devisApp.updateQty('demoiNb', -1)">-</button>
+                                <span id="qty-demoiNb">2</span>
+                                <button type="button" onclick="devisApp.updateQty('demoiNb', 1)">+</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border: 1px solid var(--border); border-radius: 12px;">
+                            <div>
+                                <div style="font-family: var(--font-serif); font-size: 1.1rem;">Boutonnières</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">18 € / unité</div>
+                            </div>
+                            <div class="qty-ctrl">
+                                <button type="button" onclick="devisApp.updateQty('boutNb', -1)">-</button>
+                                <span id="qty-boutNb">4</span>
+                                <button type="button" onclick="devisApp.updateQty('boutNb', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <div>
+                                <div style="font-family: var(--font-serif); font-size: 1.2rem;">Centres de table</div>
+                            </div>
+                            <div class="qty-ctrl">
+                                <button type="button" onclick="devisApp.updateQty('centresNb', -1)">-</button>
+                                <span id="qty-centresNb">8</span>
+                                <button type="button" onclick="devisApp.updateQty('centresNb', 1)">+</button>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="option-card flex-row selected" onclick="devisApp.selectCentre('simple')" id="centre-simple" style="padding: 12px; text-align: left;">
+                                <div class="option-card-label" style="font-size: 1rem;">Classique</div>
+                                <div class="option-card-price" style="font-size: 0.8rem;">80 € / u</div>
+                            </div>
+                            <div class="option-card flex-row" onclick="devisApp.selectCentre('luxe')" id="centre-luxe" style="padding: 12px; text-align: left;">
+                                <div class="option-card-label" style="font-size: 1rem;">Majestueux</div>
+                                <div class="option-card-price" style="font-size: 0.8rem;">150 € / u</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="border: 1px solid var(--border); border-radius: 16px; padding: 24px;">
+                        <div class="toggle-wrap" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-family: var(--font-serif); font-size: 1.2rem;">Arche Florale</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Pour la cérémonie laïque ou religieuse</div>
+                            </div>
+                            <label class="switch" style="position: relative; display: inline-block; width: 48px; height: 24px;">
+                                <input type="checkbox" id="toggle-arche" onchange="devisApp.toggleArche(this.checked)" style="opacity: 0; width: 0; height: 0;">
+                                <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
+                            </label>
+                        </div>
+                        <div id="arche-options" style="display: none; margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                            <div class="option-card flex-row selected" onclick="devisApp.selectArcheStyle('simple')" id="arche-simple" style="padding: 12px; text-align: center;">
+                                <div class="option-card-label" style="font-size: 0.9rem;">Simple</div>
+                                <div class="option-card-price" style="font-size: 0.8rem;">450 €</div>
+                            </div>
+                            <div class="option-card flex-row" onclick="devisApp.selectArcheStyle('luxe')" id="arche-luxe" style="padding: 12px; text-align: center;">
+                                <div class="option-card-label" style="font-size: 0.9rem;">Luxe</div>
+                                <div class="option-card-price" style="font-size: 0.8rem;">800 €</div>
+                            </div>
+                            <div class="option-card flex-row" onclick="devisApp.selectArcheStyle('prestige')" id="arche-prestige" style="padding: 12px; text-align: center;">
+                                <div class="option-card-label" style="font-size: 0.9rem;">Prestige</div>
+                                <div class="option-card-price" style="font-size: 0.8rem;">1400 €</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="step-actions">
+                    <button type="button" class="btn btn-outline" onclick="devisApp.prevStep()">Précédent</button>
+                    <button type="button" class="btn btn-primary" onclick="devisApp.nextStep()">Suivant</button>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="step-panel" id="step-4">
+                <div class="step-section">
+                    <h2 class="step-section-title">Options & Services</h2>
+                    <p class="step-section-sub">Sublimez votre décoration et facilitez-vous la vie.</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        
+                        <!-- Chemin de table -->
+                        <div class="toggle-row">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div class="option-card-icon" style="margin: 0; width: 40px; height: 40px;"><i data-lucide="move-horizontal" style="width: 18px;"></i></div>
+                                <div>
+                                    <div style="font-family: var(--font-serif); font-size: 1.1rem;">Chemin de table végétal</div>
+                                    <div style="font-size: 0.85rem; color: var(--gold-dark);">+ 45 € / mètre</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div id="chemin-qty-wrap" style="display: none; align-items: center; gap: 8px;">
+                                    <input type="number" id="chemin-metres" value="5" min="1" style="width: 60px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px;" onchange="devisApp.updateState('cheminMetres', this.value)">
+                                    <span style="font-size: 0.85rem; color: var(--text-muted);">m</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" onchange="devisApp.toggleOption('cheminTable', this.checked)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Pétales -->
+                        <div class="toggle-row">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div class="option-card-icon" style="margin: 0; width: 40px; height: 40px;"><i data-lucide="wind" style="width: 18px;"></i></div>
+                                <div>
+                                    <div style="font-family: var(--font-serif); font-size: 1.1rem;">Pétales au sol (allée)</div>
+                                    <div style="font-size: 0.85rem; color: var(--gold-dark);">+ 80 €</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" onchange="devisApp.toggleOption('petales', this.checked)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                        <!-- Couronne -->
+                        <div class="toggle-row">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div class="option-card-icon" style="margin: 0; width: 40px; height: 40px;"><i data-lucide="crown" style="width: 18px;"></i></div>
+                                <div>
+                                    <div style="font-family: var(--font-serif); font-size: 1.1rem;">Couronne de fleurs (Mariée)</div>
+                                    <div style="font-size: 0.85rem; color: var(--gold-dark);">+ 85 €</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" onchange="devisApp.toggleOption('couronne', this.checked)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                        <!-- Livraison -->
+                        <div class="toggle-row">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div class="option-card-icon" style="margin: 0; width: 40px; height: 40px;"><i data-lucide="truck" style="width: 18px;"></i></div>
+                                <div>
+                                    <div style="font-family: var(--font-serif); font-size: 1.1rem;">Livraison sur le lieu</div>
+                                    <div style="font-size: 0.85rem; color: var(--gold-dark);">+ 50 €</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" onchange="devisApp.toggleOption('livraison', this.checked)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                        <!-- Installation -->
+                        <div class="toggle-row">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div class="option-card-icon" style="margin: 0; width: 40px; height: 40px;"><i data-lucide="wrench" style="width: 18px;"></i></div>
+                                <div>
+                                    <div style="font-family: var(--font-serif); font-size: 1.1rem;">Installation sur place</div>
+                                    <div style="font-size: 0.85rem; color: var(--gold-dark);">+ 120 €</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" onchange="devisApp.toggleOption('installation', this.checked)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                        <!-- Démontage -->
+                        <div class="toggle-row">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div class="option-card-icon" style="margin: 0; width: 40px; height: 40px;"><i data-lucide="scissors" style="width: 18px;"></i></div>
+                                <div>
+                                    <div style="font-family: var(--font-serif); font-size: 1.1rem;">Démontage post-événement</div>
+                                    <div style="font-size: 0.85rem; color: var(--gold-dark);">+ 80 €</div>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" onchange="devisApp.toggleOption('demontage', this.checked)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button type="button" class="btn btn-outline" onclick="devisApp.prevStep()">Précédent</button>
+                    <button type="button" class="btn btn-primary" onclick="devisApp.nextStep()">Voir le récapitulatif</button>
+                </div>
+            </div>
+
+            <!-- STEP 5 -->
+            <div class="step-panel" id="step-5">
+                <div class="step-section">
+                    
+                    <div id="recap-content">
+                        <div class="recap-card">
+                            <h2 style="font-family: var(--font-serif); font-size: 2.4rem; color: var(--wine); text-align: center; margin-bottom: 32px;">Votre estimation</h2>
+                            
+                            <table class="recap-table" id="recap-table-body">
+                                <!-- Populated by JS -->
+                            </table>
+
+                            <div style="height: 1px; background: var(--gold); opacity: 0.3; margin: 24px 0;"></div>
+
+                            <div class="recap-total-row">
+                                <div class="recap-total-label">Budget estimé</div>
+                                <div class="recap-total-amount" id="recap-total-price">0 €</div>
+                            </div>
+                            
+                            <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 16px;">
+                                Estimation à titre indicatif. Un devis définitif vous sera transmis après notre premier rendez-vous.
+                            </p>
+                        </div>
+
+                        <div style="margin-top: 48px;">
+                            <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--wine); margin-bottom: 24px; text-align: center;">Recevoir ce devis</h3>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 16px;">
+                                <div>
+                                    <label class="form-label">Prénom</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Nom</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 16px;">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div style="margin-bottom: 16px;">
+                                <label class="form-label">Téléphone</label>
+                                <input type="tel" class="form-control">
+                            </div>
+                            <div style="margin-bottom: 32px;">
+                                <label class="form-label">Un message particulier ? (Optionnel)</label>
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.1rem; padding: 16px;">Envoyer ma demande</button>
+                        </div>
+                    </div>
+
+                    <div id="success-state" class="success-state" style="display: none;">
+                        <div class="success-icon"><i data-lucide="check"></i></div>
+                        <h3>Demande envoyée !</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6; max-width: 400px; margin: 0 auto;">
+                            Nous avons bien reçu votre demande d'estimation. Notre équipe vous recontactera sous 48h pour affiner ensemble votre projet.
+                        </p>
+                        <a href="index.html" class="btn btn-outline" style="margin-top: 32px; display: inline-flex;">Retour à l'accueil</a>
+                    </div>
+                </div>
+                
+                <div class="step-actions" id="step-5-actions">
+                    <button type="button" class="btn btn-outline" onclick="devisApp.prevStep()">Modifier l'estimation</button>
+                    <div></div>
+                </div>
+            </div>
+
+        </form>
     </main>
 
-    <div id="toast-container"></div>
+    <!-- Footer -->
+    <footer style="background-color: var(--dark); color: var(--cream); padding: 64px 0 32px; text-align: center;">
+        <div class="container">
+            <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 16px; color: var(--gold);">Atelier Galaad</h2>
+            <p style="opacity: 0.7; font-size: 0.9rem; margin-bottom: 32px;">Artisan Fleuriste Parisien — Événements d'exception</p>
+            <div style="opacity: 0.5; font-size: 0.8rem;">
+                &copy; 2026 Atelier Galaad. Tous droits réservés.
+            </div>
+        </div>
+    </footer>
 
+    <!-- Chatbot Widget Placeholder -->
+    <div id="chatbot-root"></div>
+
+    <!-- Scripts -->
     <script src="data/catalogue.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/devis.js"></script>
+    <script src="js/chatbot-widget.js"></script>
     <script>
         lucide.createIcons();
     </script>
