@@ -78,6 +78,30 @@
   --col-gap:  32px;
 }
 
+/* ── Custom cursor ── */
+.cursor-dot {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: var(--wine);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  left: -20px; top: -20px;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring {
+  position: fixed;
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--wine);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  left: -20px; top: -20px;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
