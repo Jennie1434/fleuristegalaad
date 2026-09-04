@@ -48,6 +48,15 @@
           <h3>Composition</h3>
         </div>
         <div class="gen-panel-body">
+          <!-- AI Prompt Section -->
+          <div class="gen-section ai-prompt-section" style="background: linear-gradient(135deg, rgba(201,169,110,0.1), rgba(201,169,110,0.05)); border: 1px solid rgba(201,169,110,0.3); padding: 16px; border-radius: 12px; margin-bottom: 24px;">
+            <div class="gen-section-label" style="display:flex; align-items:center; gap:8px; color: var(--gold);"><i data-lucide="sparkles" style="width:16px;height:16px;"></i> Inspiration par IA</div>
+            <textarea id="ai-prompt-input" rows="2" placeholder="Ex: Un bouquet romantique pour ma mère..." style="width:100%; border:1px solid var(--border); border-radius:8px; padding:10px; font-family:var(--font-sans); font-size:0.9rem; resize:none; margin-bottom:12px; outline:none; background:white;"></textarea>
+            <button onclick="generateWithAI()" class="btn btn-primary" style="width:100%; font-size:0.9rem; padding:10px; display:flex; justify-content:center; align-items:center; gap:8px;" id="ai-generate-btn">
+              <span>✨ Créer avec l'IA</span>
+            </button>
+          </div>
+
           <div class="gen-section">
             <div class="gen-section-label">Style</div>
             <div class="style-cards" id="style-container">

@@ -557,6 +557,86 @@ function generateName() {
   return `Bouquet ${styleNames[GenState.style] || ''}${couleurNom}${fleurNoms}`;
 }
 
+/* ════════════════════════════════════
+   INTEGRATION IA GEMINI
+════════════════════════════════════ */
+async function generateWithAI() {
+  const inputEl = document.getElementById('ai-prompt-input');
+  const btnEl = document.getElementById('ai-generate-btn');
+  const text = inputEl.value.trim();
+  if (!text) return;
+
+  // UI Loading
+  const oldBtnHtml = btnEl.innerHTML;
+  btnEl.innerHTML = `<svg class="animate-spin" style="animation: spin 1s linear infinite; width:16px;height:16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Création...`;
+  btnEl.disabled = true;
+
+  const API_KEY = "AIzaSyBxPTOnzFvIR1VGs4mNjjocKH_fvZzc8Io";
+  const API_URL = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=\${API_KEY}\`;
+
+  const SYSTEM_PROMPT = \`Tu es un artisan fleuriste de luxe. Un client te demande un bouquet : "\${text}".
+  Tu dois composer un bouquet en utilisant EXACTEMENT les IDs suivants du catalogue.
+  Renvoie UNIQUEMENT un objet JSON (sans balise markdown de code) avec cette structure :
+  {
+    "style": "champetre" | "classique" | "moderne" | "boheme" | "tropical",
+    "couleur": "rose-pastel" | "rouge-passion" | "blanc-pur" | "jaune-solaire" | "violet-profond",
+    "forme": "rond" | "cascade" | "brassee",
+    "taille": 1 | 2 | 3,
+    "fleurs": ["rose", "pivoine", "tulipe", "hortensia", "lys", "freesia", "renoncule", "eucalyptus", "mimosa", "anemone", "lavande", "orchidee", "dahlia", "gypsophile", "muguet"] (choisis de 3 à 12 IDs parmi cette liste exacte selon la cohérence et le budget implicite)
+  }\`;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: SYSTEM_PROMPT }] }],
+        generationConfig: { responseMimeType: "application/json" }
+      })
+    });
+    const data = await res.json();
+    const botRes = data.candidates[0].content.parts[0].text;
+    const json = JSON.parse(botRes);
+
+    // Update state
+    if (json.style) GenState.style = json.style;
+    if (json.couleur) GenState.couleur = json.couleur;
+    if (json.forme) GenState.forme = json.forme;
+    if (json.taille) {
+      GenState.taille = json.taille;
+      const tInput = document.getElementById('taille-input');
+      if (tInput) tInput.value = json.taille;
+    }
+    if (json.fleurs && Array.isArray(json.fleurs)) {
+      GenState.selectedFleurs = json.fleurs.slice(0, 12);
+    }
+
+    // Refresh UI
+    renderStyleCards();
+    renderCouleurs();
+    
+    document.querySelectorAll('.forme-card').forEach(c => c.classList.remove('selected'));
+    const btnF = document.querySelector(\`.forme-card[onclick*="\${GenState.forme}"]\`);
+    if (btnF) btnF.classList.add('selected');
+
+    renderFlowerGrid();
+    renderBouquet();
+    updateRightFooter();
+    
+    // Smooth scroll to preview on mobile
+    if (window.innerWidth <= 900) {
+      document.querySelector('[data-target="panel-center"]').click();
+    }
+
+  } catch (err) {
+    console.error("AI Generation failed:", err);
+    if (window.showToast) window.showToast("Erreur lors de la création par IA.");
+  } finally {
+    btnEl.innerHTML = oldBtnHtml;
+    btnEl.disabled = false;
+  }
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
   renderStyleCards();
@@ -569,4 +649,12 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', () => {
     if (GenState.selectedFleurs.length > 0) renderBouquet();
   });
+  
+  // Style for spinner
+  if (!document.getElementById('spin-style')) {
+    const style = document.createElement('style');
+    style.id = 'spin-style';
+    style.innerHTML = \`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }\`;
+    document.head.appendChild(style);
+  }
 });
