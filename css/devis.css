@@ -9,6 +9,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  color: white;          /* Force héritage sur tous les enfants */
 }
 .devis-header::before {
   content: '';
@@ -19,19 +20,23 @@
 .devis-header-inner {
   position: relative;
   z-index: 1;
+  color: white;
 }
+.devis-header-inner h1,
 .devis-header h1 {
   font-family: var(--font-serif);
   font-size: clamp(2.4rem, 5vw, 3.8rem);
-  color: white;
+  color: white !important;
   font-weight: 300;
   margin-bottom: 16px;
   letter-spacing: -0.01em;
 }
+.devis-header-inner p,
 .devis-header p {
-  color: rgba(255,255,255,0.65);
+  color: rgba(255, 255, 255, 0.7) !important;
   font-size: 1.05rem;
   font-weight: 300;
+  line-height: 1.6;
 }
 
 /* ── Main container ── */
@@ -155,12 +160,12 @@
 .dv-panel-head h2 {
   font-family: var(--font-serif);
   font-size: 1.9rem;
-  color: var(--wine);
+  color: var(--wine) !important;
   font-weight: 400;
   margin-bottom: 8px;
 }
 .dv-panel-head p {
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
   font-size: 0.93rem;
   line-height: 1.6;
 }
