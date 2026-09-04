@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function init() {
         updateChips(defaultSuggestions);
         setTimeout(() => {
-            addMessage("Bonjour ! Je suis la Conseillère Galaad. Comment puis-je vous aider à trouver la composition florale parfaite aujourd'hui ?", 'bot');
+            addMessage("Bonjour ! Je suis la Conseillère Fleuriste. Comment puis-je vous aider à trouver la composition florale parfaite aujourd'hui ?", 'bot');
         }, 800);
     }
 

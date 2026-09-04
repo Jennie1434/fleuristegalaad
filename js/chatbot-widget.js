@@ -6,10 +6,10 @@
 
   let chatHistory = [];
 
-  const SYSTEM_PROMPT = `Tu es Flora, la conseillère florale experte de l'Atelier Galaad, un fleuriste parisien haut de gamme.
+  const SYSTEM_PROMPT = `Tu es Flora, la conseillère florale experte de l'Atelier Fleuriste, un fleuriste parisien haut de gamme.
 Ton ton est élégant, poli, chaleureux et expert.
 Tu dois aider les clients à choisir des fleurs, donner des conseils sur les bouquets, les mariages et les prix.
-Voici quelques informations sur l'Atelier Galaad :
+Voici quelques informations sur l'Atelier Fleuriste :
 - Les bouquets démarrent à 25€.
 - Pour les mariages, le bouquet de mariée commence à 120€. Il y a un devis mariage en ligne.
 - Fleurs phares : Pivoines (printemps/été), Roses (toute l'année), Tulipes (printemps), Hortensias, Anémones.
@@ -27,13 +27,13 @@ Ne donne pas de conseils médicaux. Reste concentrée sur les fleurs. Sois conci
         <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
 
-      <div class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat Atelier Galaad">
+      <div class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat Atelier Fleuriste">
         <div class="chat-header">
           <div class="chat-header-avatar">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
           <div class="chat-header-info">
-            <div class="chat-header-name">Flora — Atelier Galaad</div>
+            <div class="chat-header-name">Flora — Atelier Fleuriste</div>
             <div class="chat-header-status"><div class="status-dot"></div> En ligne · IA Gemini</div>
           </div>
           <button class="chat-header-close" id="chat-close" aria-label="Fermer">
@@ -168,7 +168,7 @@ Ne donne pas de conseils médicaux. Reste concentrée sur les fleurs. Sois conci
         const typing = addTyping();
         setTimeout(() => {
           typing.remove();
-          addMessage("Bonjour et bienvenue à l'Atelier Galaad ! Je suis Flora, votre conseillère florale propulsée par l'IA. Comment puis-je vous aider ?", 'bot');
+          addMessage("Bonjour et bienvenue à l'Atelier Fleuriste ! Je suis Flora, votre conseillère florale propulsée par l'IA. Comment puis-je vous aider ?", 'bot');
           setChips(QUICK_CHIPS_INIT);
         }, 1000);
       }, 200);

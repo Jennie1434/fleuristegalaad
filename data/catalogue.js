@@ -78,7 +78,7 @@ const CATALOGUE = {
 
   // Messages du chatbot
   chatResponses: {
-    bonjour: "Bonjour et bienvenue à l'Atelier Galaad ! 🌸 Je suis votre conseillère florale. Comment puis-je vous aider aujourd'hui ?",
+    bonjour: "Bonjour et bienvenue à l'Atelier Fleuriste ! 🌸 Je suis votre conseillère florale. Comment puis-je vous aider aujourd'hui ?",
     mariage: "Magnifique projet ! Pour un mariage, nous proposons une gamme complète : bouquets de mariée, arches florales, centres de table... Quel est votre style de mariage ?",
     prix: "Nos bouquets commencent à 25€ pour un bouquet simple, jusqu'à 450€ pour une composition de prestige. Quel est votre budget approximatif ?",
     livraison: "Nous livrons dans tout Paris et la région parisienne. La livraison est offerte à partir de 80€ d'achat. Souhaitez-vous être livré ?",

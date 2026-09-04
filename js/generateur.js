@@ -1,5 +1,5 @@
 /**
- * generateur.js — Atelier Galaad
+ * generateur.js — Atelier Fleuriste
  * Créateur de bouquet avec rendu SVG fleurs réalistes 3D / Photoréaliste
  */
 

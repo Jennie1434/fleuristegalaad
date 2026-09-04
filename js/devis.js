@@ -1,5 +1,5 @@
 /**
- * devis.js — Atelier Galaad
+ * devis.js — Atelier Fleuriste
  * Wizard 5 étapes pour devis mariage
  */
 
