@@ -205,6 +205,12 @@ function openModal() {
     else alert('Veuillez composer un bouquet avant de commander.');
     return;
   }
+  
+  const priceDisplay = document.getElementById('modal-price-display');
+  if (priceDisplay) {
+    priceDisplay.innerHTML = `Montant estimé : <strong>${total}€</strong>`;
+  }
+  
   const modal = document.getElementById('sim-modal');
   if(modal) {
     modal.style.opacity = '1';
