@@ -572,9 +572,9 @@ async function generateWithAI() {
   btnEl.disabled = true;
 
   const API_KEY = "AIzaSyBxPTOnzFvIR1VGs4mNjjocKH_fvZzc8Io";
-  const API_URL = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=\${API_KEY}\`;
+  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-  const SYSTEM_PROMPT = \`Tu es un artisan fleuriste de luxe. Un client te demande un bouquet : "\${text}".
+  const SYSTEM_PROMPT = `Tu es un artisan fleuriste de luxe. Un client te demande un bouquet : "${text}".
   Tu dois composer un bouquet en utilisant EXACTEMENT les IDs suivants du catalogue.
   Renvoie UNIQUEMENT un objet JSON (sans balise markdown de code) avec cette structure :
   {
@@ -583,7 +583,7 @@ async function generateWithAI() {
     "forme": "rond" | "cascade" | "brassee",
     "taille": 1 | 2 | 3,
     "fleurs": ["rose", "pivoine", "tulipe", "hortensia", "lys", "freesia", "renoncule", "eucalyptus", "mimosa", "anemone", "lavande", "orchidee", "dahlia", "gypsophile", "muguet"] (choisis de 3 à 12 IDs parmi cette liste exacte selon la cohérence et le budget implicite)
-  }\`;
+  }`;
 
   try {
     const res = await fetch(API_URL, {

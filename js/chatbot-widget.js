@@ -1,6 +1,6 @@
 (function() {
   const API_KEY = "AIzaSyBxPTOnzFvIR1VGs4mNjjocKH_fvZzc8Io";
-  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
   const QUICK_CHIPS_INIT = ['Mariage', 'Bouquet cadeau', 'Prix & tarifs', 'Fleurs de saison', 'Livraison'];
 
