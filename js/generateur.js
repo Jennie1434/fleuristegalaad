@@ -595,8 +595,14 @@ async function generateWithAI() {
       })
     });
     const data = await res.json();
+    if (!data.candidates || data.candidates.length === 0) {
+      throw new Error("No candidates returned: " + JSON.stringify(data));
+    }
     const botRes = data.candidates[0].content.parts[0].text;
-    const json = JSON.parse(botRes);
+    
+    // Nettoyage au cas où Gemini renvoie des balises Markdown ```json ... ```
+    const cleanJson = botRes.replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim();
+    const json = JSON.parse(cleanJson);
 
     // Update state
     if (json.style) GenState.style = json.style;
@@ -629,8 +635,9 @@ async function generateWithAI() {
     }
 
   } catch (err) {
-    console.error("AI Generation failed:", err);
+    console.error("AI Generation failed. Error:", err);
     if (window.showToast) window.showToast("Erreur lors de la création par IA.");
+    else alert("Erreur lors de la création par IA. Consultez la console pour plus de détails.");
   } finally {
     btnEl.innerHTML = oldBtnHtml;
     btnEl.disabled = false;
