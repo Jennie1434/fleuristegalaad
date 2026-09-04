@@ -1,21 +1,3 @@
-// Mock CATALOGUE for simulator
-const CATALOGUE = {
-  fleurs: [
-    { id: 'f1', nom: 'Rose Rouge', prix: 3.50, couleurs: ['Rouge'], saison: 'Toute année', description: 'Symbole de l\'amour' },
-    { id: 'f2', nom: 'Pivoine Rose', prix: 4.50, couleurs: ['Rose'], saison: 'Printemps', description: 'Voluptueuse' },
-    { id: 'f3', nom: 'Lys Blanc', prix: 5.00, couleurs: ['Blanc'], saison: 'Toute année', description: 'Majestueux' },
-    { id: 'f4', nom: 'Tulipe', prix: 2.00, couleurs: ['Jaune', 'Rouge'], saison: 'Printemps', description: 'Colorée' },
-    { id: 'f5', nom: 'Hortensia', prix: 6.50, couleurs: ['Bleu', 'Rose'], saison: 'Été', description: 'Généreux' },
-    { id: 'f6', nom: 'Orchidée', prix: 8.00, couleurs: ['Blanc', 'Violet'], saison: 'Toute année', description: 'Élégante' }
-  ],
-  arrangements: [
-    { id: 'a1', nom: 'Bouquet Rond', prix_base: 25.00, description: 'Classique et élégant' },
-    { id: 'a2', nom: 'Bouquet Champêtre', prix_base: 30.00, description: 'Naturel et déstructuré' },
-    { id: 'a3', nom: 'Composition Piquée', prix_base: 40.00, description: 'Dans un contenant' },
-    { id: 'a4', nom: 'Centre de Table', prix_base: 45.00, description: 'Idéal pour réceptions' }
-  ]
-};
-
 const SimState = {
   arrangement: null,
   fleurs: {}, // { fleurId: qty }
