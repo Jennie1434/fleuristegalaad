@@ -5,7 +5,6 @@
   display: grid;
   grid-template-columns: 55fr 45fr;
   gap: 32px;
-  align-items: start;
 }
 .sim-left {
   display: flex;
