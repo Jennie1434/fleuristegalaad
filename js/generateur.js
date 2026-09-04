@@ -472,7 +472,24 @@ function copyComposition() {
   const comp = (document.getElementById('composition-text') || {}).textContent || '';
   navigator.clipboard.writeText(`${name}\n${comp}`).then(() => { if (window.showToast) window.showToast('Composition copiée !'); });
 }
-function orderBouquet() { window.location.href = 'simulateur-prix.html'; }
+function orderBouquet() {
+  const total = document.getElementById('price-total').innerText;
+  if (parseFloat(total) === 0 || total === '0 €') {
+    if(window.showToast) window.showToast('Veuillez composer un bouquet avant de commander.');
+    else alert('Veuillez composer un bouquet avant de commander.');
+    return;
+  }
+  const priceDisplay = document.getElementById('gen-modal-price-display');
+  if (priceDisplay) {
+    priceDisplay.innerHTML = `Montant estimé : <strong>${total}</strong>`;
+  }
+  const modal = document.getElementById('gen-modal');
+  if(modal) {
+    modal.style.opacity = '1';
+    modal.style.pointerEvents = 'all';
+    modal.querySelector('.modal').style.transform = 'translateY(0)';
+  }
+}
 
 /* ════════════════════════════════════
    RENDU INTERFACES

@@ -141,6 +141,22 @@
     </div>
   </footer>
 
+  <!-- Modal Demande de Bouquet -->
+  <div class="modal-backdrop" id="gen-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;">
+    <div class="modal" style="position: relative; max-width: 500px; width: 90%; padding: 40px; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); transform: translateY(20px); transition: transform 0.3s ease;">
+      <button class="modal-close" onclick="document.getElementById('gen-modal').style.opacity=0; document.getElementById('gen-modal').style.pointerEvents='none';" aria-label="Fermer" style="position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; background: var(--bg-alt); border: none; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--wine); display: flex; align-items: center; justify-content: center;">&times;</button>
+      <h2 style="font-family: var(--font-serif); font-size: 2rem; color: var(--wine); margin-bottom: 10px; text-align: center;">Commander cette création</h2>
+      <p style="color: var(--text-muted); text-align: center; margin-bottom: 15px;">Laissez-nous vos coordonnées, notre atelier vous recontactera très vite pour valider votre composition sur mesure.</p>
+      <div id="gen-modal-price-display" style="text-align: center; font-size: 1.3rem; color: var(--wine); font-weight: bold; margin-bottom: 24px; padding: 15px; background: var(--bg-alt); border-radius: 12px; border: 1px solid var(--border);"></div>
+      <form id="gen-form" onsubmit="event.preventDefault(); document.getElementById('gen-modal').style.opacity=0; document.getElementById('gen-modal').style.pointerEvents='none'; setTimeout(() => { if(window.showToast) window.showToast('Demande envoyée ! Nous vous contactons sous 24h 🌸'); else alert('Demande envoyée !'); }, 400);" style="display: flex; flex-direction: column; gap: 16px;">
+        <input type="text" placeholder="Votre nom" required style="padding: 14px; border: 1.5px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s;">
+        <input type="email" placeholder="Votre email" required style="padding: 14px; border: 1.5px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s;">
+        <input type="tel" placeholder="Votre téléphone" style="padding: 14px; border: 1.5px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s;">
+        <button type="submit" class="btn btn-primary" style="margin-top: 8px; padding: 14px; font-size: 1.05rem;">Envoyer ma demande</button>
+      </form>
+    </div>
+  </div>
+
   <script src="data/catalogue.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/generateur.js"></script>
