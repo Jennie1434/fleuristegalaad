@@ -79,6 +79,18 @@ const FLOWER_PALETTE = {
   muguet:     { petale:'#F0F8F0', petale2:'#D8ECD8', coeur:'#90B888', feuille:'#3A7030' }
 };
 
+const COLOR_OVERRIDES = {
+  'blanc-creme': { p1: '#FDFBF7', p2: '#EAE0D5' },
+  'rose-pastel': { p1: '#F9D8E4', p2: '#E8A0B4' },
+  'rose-vif':    { p1: '#F05070', p2: '#D03050' },
+  'rouge':       { p1: '#E02020', p2: '#900000' },
+  'peche':       { p1: '#F8B090', p2: '#D87048' },
+  'jaune':       { p1: '#F8E040', p2: '#D0A010' },
+  'violet':      { p1: '#B080D0', p2: '#8040B0' },
+  'bleu':        { p1: '#80B0F0', p2: '#4070C0' },
+  'vert-sauge':  { p1: '#A0C0B0', p2: '#609070' }
+};
+
 const FORMAT_MULT = { 1: 1, 2: 1.5, 3: 2.2 };
 
 /* ══════════════════════════════════
@@ -290,8 +302,13 @@ function generateSVGDefs() {
       </linearGradient>
   `;
   
+  const override = GenState.couleur !== 'mixte' && typeof COLOR_OVERRIDES !== 'undefined' ? COLOR_OVERRIDES[GenState.couleur] : null;
+
   Object.keys(FLOWER_PALETTE).forEach(id => {
-    const pal = FLOWER_PALETTE[id];
+    let pal = FLOWER_PALETTE[id];
+    if (override && !['eucalyptus', 'gypsophile'].includes(id)) {
+      pal = { ...pal, petale: override.p1, petale2: override.p2 };
+    }
     defs += `<radialGradient id="grad-${id}-1" cx="30%" cy="30%" r="70%">
                <stop offset="0%" stop-color="${shadeColor(pal.petale, 25)}"/>
                <stop offset="70%" stop-color="${pal.petale}"/>
@@ -521,14 +538,16 @@ function renderFlowerGrid() {
   if (!container || !window.CATALOGUE || !CATALOGUE.fleurs) return;
   
   container.innerHTML = CATALOGUE.fleurs.map(f => {
-    const pal = FLOWER_PALETTE[f.id];
-    const bg = pal ? `background:${pal.petale}` : 'background:#E8A0B4';
     const qty = GenState.selectedFleurs[f.id] || 0;
     const isSelected = qty > 0;
     
+    // Instead of a div with background color, we inject the 3D SVG flower shape
+    const svgContent = getFlowerSVG(f.id, 50, 50, 35);
+    const svgIcon = `<svg viewBox="0 0 100 100" style="width:100%; height:100%; pointer-events:none; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.15));">${svgContent}</svg>`;
+
     return `
       <div class="flower-pick-card ${isSelected ? 'selected' : ''}" id="flower-card-${f.id}">
-        <div class="flower-pick-icon" style="${bg};opacity:.85" onclick="changeQty('${f.id}', 1)"></div>
+        <div class="flower-pick-icon" style="background:transparent; cursor:pointer;" onclick="changeQty('${f.id}', 1)">${svgIcon}</div>
         <div class="flower-pick-name">${f.nom}</div>
         <div class="flower-pick-price">${f.prix.toFixed(2)}€/tige</div>
         <div class="fleur-qty" style="display:flex; justify-content:center; align-items:center; gap:12px; margin-top:12px;">
@@ -633,7 +652,14 @@ Choisis entre 3 et 6 types de fleurs différents. Pour chaque fleur, attribue un
     }
     const botRes = data.candidates[0].content.parts[0].text;
     
-    const cleanJson = botRes.replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim();
+    let cleanJson = botRes;
+    const firstBrace = botRes.indexOf('{');
+    const lastBrace = botRes.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1) {
+      cleanJson = botRes.substring(firstBrace, lastBrace + 1);
+    } else {
+      cleanJson = cleanJson.replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim();
+    }
     const json = JSON.parse(cleanJson);
 
     if (json.style) GenState.style = json.style;
