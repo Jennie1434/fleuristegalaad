@@ -18,12 +18,33 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
-  <!-- Navigation (Placeholder for external nav) -->
-  <nav class="nav">
-    <div class="nav-container">
-      <a href="index.html" class="logo">ATELIER GALAAD</a>
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <nav class="nav nav-scrolled" id="main-nav" data-transparent="false">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/logo.jpg" alt="Atelier Galaad">
+        <span class="nav-logo-name">Atelier Galaad</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="simulateur-prix.html" class="nav-link">Simulateur</a>
+        <a href="generateur-bouquet.html" class="nav-link active">Créateur</a>
+        <a href="devis-mariage.html" class="nav-link">Mariage</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <a href="devis-mariage.html" class="btn btn-gold btn-sm">Devis gratuit</a>
+        <button class="nav-hamburger hamburger" id="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
     </div>
   </nav>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="index.html" class="nav-link">Accueil</a>
+    <a href="simulateur-prix.html" class="nav-link">Simulateur</a>
+    <a href="generateur-bouquet.html" class="nav-link active">Créateur</a>
+    <a href="devis-mariage.html" class="nav-link">Devis mariage</a>
+  </div>
 
   <main class="page-container">
     <header class="page-header">
