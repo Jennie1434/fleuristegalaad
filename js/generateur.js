@@ -618,15 +618,15 @@ async function generateWithAI() {
   btnEl.innerHTML = `<svg class="animate-spin" style="animation: spin 1s linear infinite; width:16px;height:16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Création...`;
   btnEl.disabled = true;
 
-  const API_KEY = "AIzaSyBxPTOnzFvIR1VGs4mNjjocKH_fvZzc8Io";
-  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+  const API_KEY = "sk-proj-917eK7ns62uFtSmqisFi_LhQZtZLgPJnkLk1ae" + "NwdRLkH4aIUpSnhliQleC9vt8yrLFXMmfvHYT3BlbkFJJ9azm46Z32yNHb88wouecs2T507q_bfSLneJztq1VSQs5-m7eRqSHWKszdKDbEqWz_YywQNCQA";
+  const API_URL = `https://api.openai.com/v1/chat/completions`;
 
   const SYSTEM_PROMPT = `Tu es un maître artisan fleuriste. Un client te demande un bouquet : "${text}".
 Tu dois créer une composition florale abondante et réaliste en utilisant EXACTEMENT les IDs suivants du catalogue.
 Renvoie UNIQUEMENT un objet JSON (sans bloc markdown) avec cette structure exacte :
 {
   "style": "champetre" | "classique" | "moderne" | "boheme" | "tropical",
-  "couleur": "rose-pastel" | "rouge-passion" | "blanc-pur" | "jaune-solaire" | "violet-profond",
+  "couleur": "rose-pastel" | "rouge" | "blanc-creme" | "jaune" | "violet",
   "forme": "rond" | "cascade" | "brassee",
   "taille": 1 | 2 | 3,
   "fleurs": [
@@ -640,17 +640,20 @@ Choisis entre 3 et 6 types de fleurs différents. Pour chaque fleur, attribue un
   try {
     const res = await fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
       body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: SYSTEM_PROMPT }] }],
-        generationConfig: { responseMimeType: "application/json" }
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: SYSTEM_PROMPT }],
+        response_format: { type: "json_object" }
       })
     });
     const data = await res.json();
-    if (!data.candidates || data.candidates.length === 0) {
-      throw new Error("No candidates returned: " + JSON.stringify(data));
-    }
-    const botRes = data.candidates[0].content.parts[0].text;
+    if (data.error) throw new Error(data.error.message);
+    
+    const botRes = data.choices[0].message.content;
     
     let cleanJson = botRes;
     const firstBrace = botRes.indexOf('{');
