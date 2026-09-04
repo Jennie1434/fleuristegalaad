@@ -622,7 +622,7 @@ async function generateWithAI() {
     renderCouleurs();
     
     document.querySelectorAll('.forme-card').forEach(c => c.classList.remove('selected'));
-    const btnF = document.querySelector(\`.forme-card[onclick*="\${GenState.forme}"]\`);
+    const btnF = document.querySelector(`.forme-card[onclick*="${GenState.forme}"]`);
     if (btnF) btnF.classList.add('selected');
 
     renderFlowerGrid();
@@ -661,7 +661,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('spin-style')) {
     const style = document.createElement('style');
     style.id = 'spin-style';
-    style.innerHTML = \`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }\`;
+    style.innerHTML = `@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;
     document.head.appendChild(style);
   }
 });
