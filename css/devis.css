@@ -1,438 +1,541 @@
-/* CSS for Devis Mariage */
+/* ════════════════════════════════════════
+   ATELIER GALAAD — Devis Mariage CSS
+════════════════════════════════════════ */
 
-.devis-page-header {
-    background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
-    padding: calc(var(--nav-height) + 64px) 20px 64px;
-    color: white;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.devis-page-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(201,169,110,0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-}
-
-.devis-page-header h1 {
-    color: white;
-    font-family: var(--font-serif);
-    font-size: 3.5rem;
-    margin-bottom: 16px;
-    font-weight: 500;
-}
-
-.devis-page-header p {
-    color: rgba(255,255,255,0.75);
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.wizard-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.wizard-header {
-    margin-bottom: 40px;
-}
-
-.wizard-steps {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    margin-bottom: 16px;
-}
-
-.step-bubble {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--cream-dark);
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-serif);
-    font-size: 1.2rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-    z-index: 2;
-}
-
-.step-bubble.active {
-    background: var(--wine);
-    color: white;
-    box-shadow: 0 4px 12px rgba(74,22,40,0.2);
-}
-
-.step-bubble.completed {
-    background: var(--gold);
-    color: white;
-}
-
-.wizard-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.wizard-labels span {
-    width: 20%;
-    text-align: center;
-}
-
-.progress-bar {
-    height: 4px;
-    background: var(--cream-dark);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-}
-
-.progress-fill {
-    height: 100%;
-    background: var(--wine);
-    transition: width 0.4s ease;
-}
-
-.step-panel {
-    display: none;
-    animation: fadeUp 0.4s ease forwards;
-}
-
-.step-panel.active {
-    display: block;
-}
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.step-section {
-    margin-bottom: 36px;
-}
-
-.step-section-title {
-    font-family: var(--font-serif);
-    font-size: 1.6rem;
-    color: var(--wine);
-    margin-bottom: 6px;
-}
-
-.step-section-sub {
-    font-size: 0.87rem;
-    color: var(--text-muted);
-    margin-bottom: 20px;
-}
-
-.option-card {
-    border: 1.5px solid var(--border);
-    border-radius: 20px;
-    padding: 22px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.25s ease;
-    background: white;
-}
-
-.option-card:hover {
-    border-color: var(--wine-light);
-    box-shadow: var(--shadow-sm);
-    transform: translateY(-2px);
-}
-
-.option-card.selected {
-    border-color: var(--wine);
-    background: rgba(74,22,40,0.04);
-    box-shadow: 0 0 0 3px rgba(74,22,40,0.08);
-}
-
-.option-card-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--cream-dark);
-    margin: 0 auto 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.option-card-icon svg {
-    width: 24px;
-    height: 24px;
-    stroke: var(--wine-mid);
-    transition: stroke 0.3s ease;
-}
-
-.option-card.selected .option-card-icon {
-    background: var(--wine);
-}
-
-.option-card.selected .option-card-icon svg {
-    stroke: white;
-}
-
-.option-card-label {
-    font-family: var(--font-serif);
-    font-size: 1.15rem;
-    color: var(--dark);
-}
-
-.option-card-price {
-    font-size: 0.85rem;
-    color: var(--gold-dark);
-    font-weight: 600;
-    margin-top: 4px;
-}
-
-.option-card-desc {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-top: 6px;
-}
-
-.color-palette {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.color-swatch-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-}
-
-.color-swatch {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    transition: all 0.2s ease;
-}
-
-.color-swatch.selected {
-    border-color: var(--wine);
-    transform: scale(1.12);
-    box-shadow: 0 0 0 3px rgba(74,22,40,0.12);
-}
-
-.swatch-label {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-align: center;
-    max-width: 60px;
-    line-height: 1.2;
-}
-
-.recap-card {
-    background: var(--cream-dark);
-    border-radius: 24px;
-    padding: 40px;
-    margin-bottom: 32px;
-}
-
-.recap-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-.recap-table tr td {
-    padding: 12px 0;
-    font-size: 0.9rem;
-    border-bottom: 1px solid var(--border);
-    color: var(--dark);
-}
-
-.recap-table tr:last-child td {
-    border-bottom: none;
-}
-
-.recap-table td:last-child {
-    text-align: right;
-    font-weight: 600;
-    color: var(--wine);
-}
-
-.recap-total-row {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: var(--shadow-sm);
-}
-
-.recap-total-label {
-    font-family: var(--font-serif);
-    font-size: 1.1rem;
-    color: var(--dark);
-    font-weight: 500;
-}
-
-.recap-total-amount {
-    font-family: var(--font-serif);
-    font-size: 2.8rem;
-    color: var(--wine);
-    font-weight: 600;
-}
-
-.step-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 40px;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
-}
-
-.slider-display {
-    text-align: center;
-    font-family: var(--font-serif);
-    font-size: 2rem;
-    color: var(--wine);
-    margin-top: 8px;
-}
-
-.success-state {
-    text-align: center;
-    padding: 48px 0;
-}
-
-.success-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: rgba(74,22,40,0.08);
-    margin: 0 auto 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.success-icon svg {
-    width: 36px;
-    height: 36px;
-    stroke: var(--wine);
-}
-
-.success-state h3 {
-    font-family: var(--font-serif);
-    font-size: 2rem;
-    color: var(--wine);
-    margin-bottom: 12px;
-}
-
-/* Switches & Controls */
-.switch {
+/* ── Page header ── */
+.devis-header {
+  background: linear-gradient(135deg, #1C1410 0%, var(--wine) 55%, #3A0E20 100%);
+  padding: 80px 0 64px;
+  text-align: center;
   position: relative;
-  display: inline-block;
-  width: 48px;
-  height: 24px;
+  overflow: hidden;
 }
-
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
+.devis-header::before {
+  content: '';
   position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #e0e0e0;
-  transition: .4s;
-  border-radius: 34px;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(201,169,110,0.12) 0%, transparent 70%);
+}
+.devis-header-inner {
+  position: relative;
+  z-index: 1;
+}
+.devis-header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  color: white;
+  font-weight: 300;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.devis-header p {
+  color: rgba(255,255,255,0.65);
+  font-size: 1.05rem;
+  font-weight: 300;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: .4s;
+/* ── Main container ── */
+.devis-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 52px 24px 100px;
+}
+
+/* ── Steps indicator ── */
+.dv-steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 32px;
+}
+
+.dv-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+}
+
+.dv-step-circle {
+  width: 40px; height: 40px;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 2px solid var(--border);
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  position: relative;
+  z-index: 2;
+  transition: all 0.35s ease;
+}
+.dv-step-circle svg { display: none; }
+.dv-step-circle span { display: block; }
+
+.dv-step-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-top: 8px;
+  text-align: center;
+  font-weight: 500;
+  transition: color 0.3s;
+  white-space: nowrap;
 }
 
-input:checked + .slider {
-  background-color: var(--wine);
+.dv-step-line {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  right: -50%;
+  height: 2px;
+  background: var(--border);
+  z-index: 1;
 }
 
-input:checked + .slider:before {
-  transform: translateX(24px);
+/* Active step */
+.dv-step.active .dv-step-circle {
+  background: var(--wine);
+  border-color: var(--wine);
+  color: white;
+  box-shadow: 0 0 0 5px rgba(74, 22, 40, 0.12);
+}
+.dv-step.active .dv-step-label { color: var(--wine); }
+
+/* Completed step */
+.dv-step.done .dv-step-circle {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: white;
+}
+.dv-step.done .dv-step-circle svg { display: block; }
+.dv-step.done .dv-step-circle span { display: none; }
+.dv-step.done .dv-step-line { background: var(--gold); }
+.dv-step.done .dv-step-label { color: var(--gold-dark); }
+
+/* ── Progress bar ── */
+.dv-progress {
+  height: 3px;
+  background: var(--border);
+  border-radius: 99px;
+  margin-bottom: 48px;
+  overflow: hidden;
+}
+.dv-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--wine), var(--gold));
+  border-radius: 99px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.qty-ctrl {
-    display: inline-flex;
-    align-items: center;
-    background: var(--cream);
-    border-radius: 8px;
-    padding: 4px;
+/* ── Panel ── */
+.dv-panel {
+  display: none;
+  background: white;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  padding: 48px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.07);
+  animation: panelIn 0.4s ease;
+}
+.dv-panel.active { display: block; }
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.qty-ctrl button {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1.1rem;
-    color: var(--dark);
-    transition: all 0.2s;
+.dv-panel-head {
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.dv-panel-head h2 {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  color: var(--wine);
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+.dv-panel-head p {
+  color: var(--text-muted);
+  font-size: 0.93rem;
+  line-height: 1.6;
 }
 
-.qty-ctrl button:hover {
-    background: var(--cream-dark);
+/* ── Form utils ── */
+.form-group { margin-bottom: 24px; }
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.form-control {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text);
+  background: white;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--wine);
+  box-shadow: 0 0 0 3px rgba(74,22,40,0.08);
+}
+textarea.form-control { resize: vertical; min-height: 90px; }
+select.form-control { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+/* ── Grids ── */
+.dv-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.dv-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+@media (max-width: 600px) {
+  .dv-grid-2 { grid-template-columns: 1fr; }
+  .dv-grid-3 { grid-template-columns: 1fr 1fr; }
 }
 
-.qty-ctrl span {
-    width: 36px;
-    text-align: center;
-    font-weight: 500;
-    font-size: 1rem;
+/* ── Slider (range) ── */
+.dv-range {
+  width: 100%;
+  margin: 12px 0 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: linear-gradient(90deg, var(--wine) 0%, var(--border) 0%);
+  border-radius: 99px;
+  outline: none;
+  cursor: pointer;
+}
+.dv-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--wine);
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.dv-range::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.dv-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
-.toggle-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: white;
+/* ── Option cards (venue, etc.) ── */
+.dv-option-card {
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: white;
+}
+.dv-option-card:hover { border-color: rgba(74,22,40,0.3); transform: translateY(-3px); }
+.dv-option-card.selected {
+  border-color: var(--wine);
+  background: rgba(74,22,40,0.04);
+  box-shadow: 0 0 0 3px rgba(74,22,40,0.08);
+}
+.dv-option-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: var(--cream-dark);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+  transition: all 0.25s ease;
+  color: var(--wine-mid);
+}
+.dv-option-card:hover .dv-option-icon,
+.dv-option-card.selected .dv-option-icon {
+  background: var(--wine);
+  color: white;
+}
+.dv-option-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* ── Styles list (step 2) ── */
+.dv-styles-list { display: flex; flex-direction: column; gap: 10px; }
+.dv-style-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: white;
+}
+.dv-style-option:hover { border-color: rgba(74,22,40,0.3); }
+.dv-style-option.selected { border-color: var(--wine); background: rgba(74,22,40,0.04); }
+.dv-style-dot {
+  width: 12px; height: 12px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.dv-style-option.selected .dv-style-dot { background: var(--wine); border-color: var(--wine); }
+.dv-style-name { font-family: var(--font-serif); font-size: 1.05rem; }
+.dv-style-desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+/* ── Color swatches ── */
+.dv-swatches { display: flex; flex-wrap: wrap; gap: 12px; }
+.dv-swatch {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  position: relative;
+}
+.dv-swatch:hover { transform: scale(1.15); }
+.dv-swatch.selected { border-color: var(--wine); box-shadow: 0 0 0 4px rgba(74,22,40,0.2), 0 2px 8px rgba(0,0,0,0.12); transform: scale(1.1); }
+
+/* ── Choice rows (bouquets, etc.) ── */
+.dv-choice-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: white;
+}
+.dv-choice-row:hover { border-color: rgba(74,22,40,0.3); }
+.dv-choice-row.selected {
+  border-color: var(--wine);
+  background: rgba(74,22,40,0.04);
+  box-shadow: 0 0 0 3px rgba(74,22,40,0.07);
+}
+.dv-choice-name { font-family: var(--font-serif); font-size: 1.1rem; }
+.dv-choice-desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
+.dv-choice-price { font-family: var(--font-serif); font-size: 1.2rem; color: var(--wine); flex-shrink: 0; }
+
+/* ── Qty blocks ── */
+.dv-qty-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  background: white;
+}
+.dv-qty-name { font-family: var(--font-serif); font-size: 1rem; margin-bottom: 3px; }
+.dv-qty-price { font-size: 0.78rem; color: var(--text-muted); }
+.dv-qty-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--cream-dark);
+  border-radius: 99px;
+  padding: 5px 8px;
+}
+.dv-qty-btn {
+  width: 28px; height: 28px;
+  border: none;
+  background: white;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--wine);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+  line-height: 1;
+}
+.dv-qty-btn:hover { background: var(--wine); color: white; transform: scale(1.08); }
+.dv-qty-val {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--text);
+  min-width: 24px;
+  text-align: center;
+}
+
+/* ── Blocks (arche, centres) ── */
+.dv-block {
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  background: white;
+}
+.dv-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dv-block-title { font-family: var(--font-serif); font-size: 1.15rem; }
+
+/* ── Toggle switches ── */
+.dv-options-list { display: flex; flex-direction: column; gap: 12px; }
+.dv-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  transition: border-color 0.25s;
+}
+.dv-toggle-row:has(input:checked) { border-color: rgba(74,22,40,0.25); background: rgba(74,22,40,0.025); }
+.dv-toggle-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--cream-dark);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--wine-mid);
+  flex-shrink: 0;
+}
+.dv-toggle-title { font-family: var(--font-serif); font-size: 1rem; }
+.dv-toggle-sub { font-size: 0.82rem; color: var(--gold-dark); font-weight: 500; margin-top: 2px; }
+
+/* Switch toggle */
+.dv-switch { position: relative; display: inline-block; width: 48px; height: 26px; flex-shrink: 0; }
+.dv-switch input { opacity: 0; width: 0; height: 0; }
+.dv-switch-track {
+  position: absolute; inset: 0;
+  background: #D1D5DB;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.dv-switch-track::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 3px;
+  width: 20px; height: 20px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.3s;
+}
+.dv-switch input:checked + .dv-switch-track { background: var(--wine); }
+.dv-switch input:checked + .dv-switch-track::after { transform: translateX(22px); }
+
+/* ── Actions row ── */
+.dv-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  gap: 12px;
+}
+
+/* ── Recap (step 5) ── */
+.dv-recap-card {
+  background: var(--cream);
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+}
+.dv-recap-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.dv-recap-table tr {
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.dv-recap-table tr:last-child { border-bottom: none; }
+.dv-recap-table td {
+  padding: 11px 0;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+.dv-recap-table td:last-child {
+  text-align: right;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--wine);
+  font-weight: 500;
+}
+.dv-recap-divider {
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--wine), var(--gold));
+  border-radius: 99px;
+  margin: 24px 0;
+  opacity: 0.3;
+}
+.dv-recap-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+.dv-recap-total span:first-child {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.dv-recap-amount {
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  color: var(--wine);
+  font-weight: 400;
+}
+
+/* ── Contact form section ── */
+.dv-contact-form {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+}
+.dv-contact-form h3 {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: var(--wine);
+  text-align: center;
+  margin-bottom: 28px;
+  font-weight: 400;
+}
+
+/* ── Success state ── */
+.dv-success-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--wine), var(--gold-dark));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto;
+  color: white;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .dv-panel { padding: 28px 20px; }
+  .dv-recap-card, .dv-contact-form { padding: 24px 18px; }
+  .dv-steps { gap: 0; }
+  .dv-step-label { font-size: 0.6rem; }
+  .dv-step-circle { width: 32px; height: 32px; font-size: 0.78rem; }
+  .dv-step-line { top: 16px; }
+  .dv-recap-amount { font-size: 2rem; }
 }
