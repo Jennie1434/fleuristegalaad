@@ -14,6 +14,17 @@ function init() {
   setupFormatListeners();
   setupExtrasListeners();
   document.getElementById('sim-reset').addEventListener('click', resetAll);
+  
+  // Modal listeners
+  const submitBtn = document.getElementById('sim-submit');
+  if(submitBtn) submitBtn.addEventListener('click', openModal);
+  
+  const closeBtn = document.getElementById('sim-modal-close');
+  if(closeBtn) closeBtn.addEventListener('click', closeModal);
+  
+  const form = document.getElementById('sim-form');
+  if(form) form.addEventListener('submit', handleFormSubmit);
+
   recalculate();
 }
 
@@ -182,6 +193,48 @@ function resetAll() {
   });
 
   recalculate();
+}
+
+/* ════════════════════════════════════
+   MODAL & SUBMIT
+════════════════════════════════════ */
+function openModal() {
+  const total = document.getElementById('sim-total').innerText;
+  if (parseFloat(total) === 0) {
+    if(window.showToast) window.showToast('Veuillez composer un bouquet avant de commander.');
+    else alert('Veuillez composer un bouquet avant de commander.');
+    return;
+  }
+  const modal = document.getElementById('sim-modal');
+  if(modal) {
+    modal.style.opacity = '1';
+    modal.style.pointerEvents = 'all';
+    modal.querySelector('.modal').style.transform = 'translateY(0)';
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById('sim-modal');
+  if(modal) {
+    modal.style.opacity = '0';
+    modal.style.pointerEvents = 'none';
+    modal.querySelector('.modal').style.transform = 'translateY(20px)';
+  }
+}
+
+function handleFormSubmit(e) {
+  e.preventDefault();
+  closeModal();
+  
+  // Fake loading / success
+  setTimeout(() => {
+    if(window.showToast) {
+      window.showToast('Demande envoyée ! Nous vous contactons sous 24h 🌸');
+    } else {
+      alert('Demande envoyée ! Nous vous contactons sous 24h 🌸');
+    }
+    resetAll();
+  }, 400);
 }
 
 document.addEventListener('DOMContentLoaded', init);
