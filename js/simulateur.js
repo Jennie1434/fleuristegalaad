@@ -149,7 +149,9 @@ function recalculate() {
 
 function updatePanel(total, breakdown) {
   const totalEl = document.getElementById('sim-total');
-  animateNumber(totalEl, total);
+  const mobileEl = document.getElementById('sim-total-mobile');
+  if (totalEl) animateNumber(totalEl, total);
+  if (mobileEl) animateNumber(mobileEl, total);
 
   const bdContainer = document.getElementById('sim-breakdown');
   if (breakdown.length === 0) {

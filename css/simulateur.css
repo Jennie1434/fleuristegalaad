@@ -297,10 +297,30 @@
 }
 @media (max-width: 900px) {
   .sim-layout { grid-template-columns: 1fr; }
-  .price-panel { position: static; margin-top: 32px; }
+  .price-panel { position: static; margin-top: 32px; margin-bottom: 80px; }
   .fleur-grid { grid-template-columns: repeat(2, 1fr); }
+  .mobile-sticky-bar { display: flex; }
 }
 @media (max-width: 480px) {
   .fleur-grid { grid-template-columns: 1fr; }
   .format-cards { grid-template-columns: 1fr; }
+}
+
+.mobile-sticky-bar {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: white;
+  border-top: 1px solid var(--border);
+  padding: 16px 5%;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  z-index: 900;
+}
+.mobile-sticky-price {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--wine);
+  font-weight: 500;
 }
